@@ -1,0 +1,1 @@
+ # SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(BASE_DIR, "instance", "portfolio.db")
