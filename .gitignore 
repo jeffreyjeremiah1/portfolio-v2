@@ -1,7 +1,13 @@
+venv/
 __pycache__/
 *.pyc
+
 .env
+
 instance/
-venv/
-.idea/
-.vscode/
+
+uploads/
+
+portfolio.db
+
+*.sqlite3
