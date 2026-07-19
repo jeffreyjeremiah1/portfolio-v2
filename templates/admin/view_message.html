@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Message{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <a href="{{ url_for('admin.messages') }}"
+       class="btn btn-secondary mb-4">
+
+        ← Back to Inbox
+
+    </a>
+
+    <div class="card shadow">
+
+        <div class="card-header">
+
+            <h3>{{ message.subject }}</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <p>
+
+                <strong>Name:</strong>
+
+                {{ message.name }}
+
+            </p>
+
+            <p>
+
+                <strong>Email:</strong>
+
+                {{ message.email }}
+
+            </p>
+
+            <p>
+
+                <strong>Received:</strong>
+
+                {{ message.created_at.strftime("%d %B %Y %H:%M") }}
+
+            </p>
+
+            <hr>
+
+            <p style="white-space: pre-wrap;">
+
+                {{ message.message }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
