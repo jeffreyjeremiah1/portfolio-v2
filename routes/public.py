@@ -39,3 +39,4 @@ def home():
         projects=projects,
         form=form
     )
+

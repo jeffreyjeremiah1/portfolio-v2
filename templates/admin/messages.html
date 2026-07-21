@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "admin/admin_base.html" %}
 
 {% block content %}
 
@@ -7,6 +7,26 @@
     <h2 class="mb-4">
         Inbox
     </h2>
+
+    <form method="GET" class="mb-4">
+
+        <div class="input-group">
+
+            <input
+                class="form-control"
+                name="search"
+                placeholder="Search messages..."
+                value="{{ search }}">
+
+            <button class="btn btn-primary">
+
+                <i class="fa-solid fa-search"></i>
+
+            </button>
+
+        </div>
+
+    </form>
 
     <table class="table table-striped">
 
@@ -32,7 +52,7 @@
 
         <tbody>
 
-        {% for message in messages %}
+        {% for message in messages.items %}
 
             <tr>
 
@@ -50,20 +70,24 @@
 
                 </td>
 
-                <td>{{ message.created_at.strftime("%d %b %Y") }}</td>
+                <td>{{ message.created_at.strftime("%d %b %Y, %I:%M %p") }}</td>
 
                 <td>
 
-                    {% if message.is_read %}
+                    {% if not message.is_read %}
 
-                        <span class="badge bg-success">
-                            Read
+                        <span class="badge bg-danger">
+
+                        Unread
+
                         </span>
 
-                    {% else %}
+                        {% else %}
 
-                        <span class="badge bg-warning text-dark">
-                            Unread
+                        <span class="badge bg-success">
+
+                        Read
+
                         </span>
 
                     {% endif %}
@@ -94,5 +118,59 @@
     </table>
 
 </div>
+
+
+<nav>
+
+    <ul class="pagination">
+
+        {% if messages.has_prev %}
+
+            <li class="page-item">
+
+            <a class="page-link"
+            href="{{ url_for('admin.messages',
+                            page=messages.prev_num,
+                            search=search) }}">
+
+            Previous
+
+            </a>
+
+            </li>
+
+        {% endif %}
+
+        <li class="page-item disabled">
+
+            <span class="page-link">
+
+                Page {{ messages.page }} of {{ messages.pages }}
+
+            </span>
+
+        </li>
+
+        {% if messages.has_next %}
+
+            <li class="page-item">
+
+                <a class="page-link"
+                href="{{ url_for('admin.messages',
+                                page=messages.next_num,
+                                search=search) }}">
+
+                Next
+
+                </a>
+
+            </li>
+
+        {% endif %}
+
+    </ul>
+
+    </nav>
+
 
 {% endblock %}
