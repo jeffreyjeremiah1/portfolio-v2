@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_wtf import form
 from models import db, Project, Message
 from forms import ProjectForm
@@ -44,6 +44,38 @@ def dashboard():
         unread_messages=unread_messages,
         recent_projects=recent_projects,
         recent_messages=recent_messages
+    )
+
+
+@admin.route("/admin/projects")
+@login_required
+def projects():
+
+    search = request.args.get("search", "").strip()
+
+    page = request.args.get("page", 1, type=int)
+
+    query = Project.query
+
+    if search:
+        query = query.filter(
+            Project.title.ilike(f"%{search}%")
+        )
+
+    projects = (
+        query
+        .order_by(Project.id.desc())
+        .paginate(
+            page=page,
+            per_page=5,
+            error_out=False
+        )
+    )
+
+    return render_template(
+        "admin/projects.html",
+        projects=projects,
+        search=search
     )
 
 
@@ -94,7 +126,7 @@ def add_project():
 @login_required
 def edit_project(id):
 
-    project = Project.query.get_or_404(id)
+    project = db.get_or_404(Project, id)
 
     form = ProjectForm(obj=project)
 
@@ -136,7 +168,7 @@ def edit_project(id):
 @login_required
 def delete_project(id):
 
-    project = Project.query.get_or_404(id)
+    project = db.get_or_404(Project, id)
 
     db.session.delete(project)
     db.session.commit()
@@ -150,20 +182,41 @@ def delete_project(id):
 @login_required
 def messages():
 
-    messages = Message.query.order_by(
-        Message.created_at.desc()
-    ).all()
+    search = request.args.get("search", "").strip()
+
+    page = request.args.get("page", 1, type=int)
+
+    query = Message.query
+
+    if search:
+        query = query.filter(
+            (Message.name.ilike(f"%{search}%")) |
+            (Message.email.ilike(f"%{search}%")) |
+            (Message.subject.ilike(f"%{search}%"))
+        )
+
+    messages = (
+        query
+        .order_by(Message.created_at.desc())
+        .paginate(
+            page=page,
+            per_page=10,
+            error_out=False
+        )
+    )
 
     return render_template(
         "admin/messages.html",
-        messages=messages
+        messages=messages,
+        search=search
     )
+
 
 @admin.route("/admin/messages/<int:id>")
 @login_required
 def view_message(id):
 
-    message = Message.query.get_or_404(id)
+    message = db.get_or_404(Message, id)
 
     if not message.is_read:
         message.is_read = True
@@ -178,7 +231,7 @@ def view_message(id):
 @login_required
 def delete_message(id):
 
-    message = Message.query.get_or_404(id)
+    message = db.get_or_404(Message, id)
 
     db.session.delete(message)
 

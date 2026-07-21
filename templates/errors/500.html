@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error{% endblock %}
+
+{% block content %}
+
+<div class="container py-5 text-center">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <i class="fa-solid fa-triangle-exclamation text-danger display-1 mb-4"></i>
+
+            <h1 class="display-4 fw-bold">
+                500
+            </h1>
+
+            <h3 class="mb-3">
+                Something went wrong
+            </h3>
+
+            <p class="lead text-muted mb-4">
+                Sorry, something unexpected happened on our server.
+                Please try again in a few moments.
+            </p>
+
+            <a href="{{ url_for('public.home') }}"
+               class="btn btn-primary btn-lg">
+
+                <i class="fa-solid fa-house me-2"></i>
+
+                Return Home
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
