@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
-
+from datetime import datetime
 from forms import LoginForm
-from models import User
+from models import User, db
+
 
 
 
@@ -29,6 +30,9 @@ def login():
                 user,
                 remember=form.remember.data
             )
+
+            user.last_login = datetime.utcnow()
+            db.session.commit()
 
             flash(
                 "Welcome back!",
