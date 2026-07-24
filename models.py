@@ -28,21 +28,56 @@ class Project(db.Model):
         return f"<Project {self.title}>"
     
 
+
 class User(UserMixin, db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
 
-    username = db.Column(db.String(100), unique=True, nullable=False)
+    username = db.Column(
+        db.String(100),
+        unique=True,
+        nullable=False
+    )
 
-    password_hash = db.Column(db.String(255), nullable=False)
+    email = db.Column(
+        db.String(120),
+        unique=True,
+        nullable=True
+    )
+
+    password_hash = db.Column(
+        db.String(255),
+        nullable=False
+    )
+
+    profile_image = db.Column(
+        db.String(255),
+        default="uploads/profiles/default.png"
+    )
+
+    created_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow
+    )
+
+    updated_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
+    )
+
+    last_login = db.Column(
+        db.DateTime,
+        nullable=True
+    )
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-    
+
 
 class Message(db.Model):
     __tablename__ = "messages"
@@ -82,3 +117,62 @@ class Message(db.Model):
 
     def __repr__(self):
         return f"<Message {self.name}>"
+
+
+
+class Settings(db.Model):
+    __tablename__ = "settings"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    # General
+    site_name = db.Column(
+        db.String(100),
+        nullable=False,
+        default="My Portfolio"
+    )
+
+    tagline = db.Column(db.String(255))
+
+    about = db.Column(db.Text)
+
+    # Contact
+    contact_email = db.Column(db.String(120))
+    phone = db.Column(db.String(50))
+    address = db.Column(db.String(255))
+
+    # Branding
+    logo = db.Column(
+        db.String(255),
+        default="uploads/site/default-logo.png"
+    )
+
+    favicon = db.Column(
+        db.String(255),
+        default="uploads/site/default-favicon.png"
+    )
+
+    # Social
+    github = db.Column(db.String(255))
+    linkedin = db.Column(db.String(255))
+    twitter = db.Column(db.String(255))
+    facebook = db.Column(db.String(255))
+    instagram = db.Column(db.String(255))
+    youtube = db.Column(db.String(255))
+
+    # SEO
+    meta_title = db.Column(db.String(255))
+    meta_description = db.Column(db.Text)
+    meta_keywords = db.Column(db.String(255))
+
+    # Footer
+    copyright_text = db.Column(
+        db.String(255),
+        default="© 2026 All Rights Reserved."
+    )
+
+    updated_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
+    )

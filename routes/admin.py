@@ -1,11 +1,12 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_wtf import form
-from models import db, Project, Message
-from forms import ProjectForm
+from models import db, Project, Message, User
+from forms import ProjectForm, EditProfileForm, ChangePasswordForm
 import os
 from werkzeug.utils import secure_filename
 from flask import current_app
-from flask_login import login_required
+from flask_login import login_required, current_user
+from utils import save_profile_image, delete_profile_image
 
 
 admin = Blueprint("admin", __name__)
@@ -243,3 +244,108 @@ def delete_message(id):
     )
 
     return redirect(url_for("admin.messages"))
+
+
+@admin.route("/profile")
+@login_required
+def profile():
+    return render_template(
+        "admin/profile.html",
+        user=current_user
+    )
+
+@admin.route("/profile/edit", methods=["GET", "POST"])
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+
+    if form.validate_on_submit():
+
+        username = form.username.data.strip()
+        email = form.email.data.strip().lower()
+
+        existing_user = User.query.filter(
+            User.username == username,
+            User.id != current_user.id
+        ).first()
+
+        if existing_user:
+            flash("Username already exists.", "danger")
+            return render_template("admin/edit_profile.html", form=form)
+
+        existing_email = User.query.filter(
+            User.email == email,
+            User.id != current_user.id
+        ).first()
+
+        if existing_email:
+            flash("Email already exists.", "danger")
+            return render_template("admin/edit_profile.html", form=form)
+
+        current_user.username = username
+        current_user.email = email
+
+        if form.profile_image.data:
+
+            delete_profile_image(current_user.profile_image)
+
+            current_user.profile_image = save_profile_image(
+                form.profile_image.data
+            )
+
+        db.session.commit()
+
+        flash("Profile updated successfully!", "success")
+        return redirect(url_for("admin.profile"))
+
+    elif request.method == "GET":
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+
+    return render_template(
+        "admin/edit_profile.html",
+        form=form
+    )
+
+
+@admin.route("/profile/change-password", methods=["GET", "POST"])
+@login_required
+def change_password():
+
+    form = ChangePasswordForm()
+
+    if form.validate_on_submit():
+
+        if not current_user.check_password(
+            form.current_password.data
+        ):
+
+            flash(
+                "Current password is incorrect.",
+                "danger"
+            )
+
+            return render_template(
+                "admin/change_password.html",
+                form=form
+            )
+
+        current_user.set_password(
+            form.new_password.data
+        )
+
+        db.session.commit()
+
+        flash(
+            "Password updated successfully.",
+            "success"
+        )
+
+        return redirect(
+            url_for("admin.profile")
+        )
+
+    return render_template(
+        "admin/change_password.html",
+        form=form
+    )

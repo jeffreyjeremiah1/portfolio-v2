@@ -7,7 +7,7 @@ from wtforms import PasswordField
 from wtforms.validators import DataRequired
 from wtforms import BooleanField
 from wtforms import TextAreaField
-from wtforms.validators import Email, Length
+from wtforms.validators import Email, Length, EqualTo
 
 
 class LoginForm(FlaskForm):
@@ -89,3 +89,57 @@ class ContactForm(FlaskForm):
     submit = SubmitField(
         "Send Message"
     )
+
+class EditProfileForm(FlaskForm):
+
+    username = StringField(
+        "Username",
+        validators=[DataRequired(), Length(min=3, max=100)],
+        render_kw={"placeholder": "Enter username"}
+    )
+
+    email = StringField(
+        "Email",
+        validators=[DataRequired(), Email()],
+        render_kw={"placeholder": "Enter email"}
+    )
+
+    profile_image = FileField(
+        "Profile Picture",
+        validators=[
+            FileAllowed(
+                ["jpg", "jpeg", "png", "webp"],
+                "Images only!"
+            )
+        ]
+    )
+
+    submit = SubmitField("Save Changes")
+
+class ChangePasswordForm(FlaskForm):
+
+    current_password = PasswordField(
+        "Current Password",
+        validators=[DataRequired()]
+    )
+
+    new_password = PasswordField(
+        "New Password",
+        validators=[
+            DataRequired(),
+            Length(min=8)
+        ]
+    )
+
+    confirm_password = PasswordField(
+        "Confirm Password",
+        validators=[
+            DataRequired(),
+            EqualTo(
+                "new_password",
+                message="Passwords must match."
+            )
+        ]
+    )
+
+    submit = SubmitField("Update Password")
