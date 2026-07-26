@@ -4,38 +4,38 @@
 
 <div class="container py-5">
 
-    <h2>Add Project</h2>
+    <h2 class="mb-3 text-body">Add Project</h2>
 
     <form method="POST" enctype="multipart/form-data">
 
         {{ form.hidden_tag() }}
 
-        <div class="mb-3">
+        <div class="mb-3 text-body">
             {{ form.title.label }}
             {{ form.title(class="form-control") }}
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3 text-body">
             {{ form.description.label }}
             {{ form.description(class="form-control") }}
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3 text-body">
             {{ form.image.label }}
             {{ form.image(class="form-control") }}
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3 text-body">
             {{ form.github.label }}
             {{ form.github(class="form-control") }}
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3 text-body">
             {{ form.demo.label }}
             {{ form.demo(class="form-control") }}
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3 text-body">
             {{ form.technologies.label }}
             {{ form.technologies(class="form-control") }}
         </div>
