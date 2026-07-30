@@ -3,7 +3,7 @@ from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
 
 from config import Config
-from models import db, User, Message
+from models import db, User, Message, Settings
 
 from routes.public import public
 from routes.admin import admin
@@ -26,6 +26,14 @@ def inject_admin_stats():
             "unread_messages": get_unread_count()
         }
     return {"unread_messages": 0}
+
+
+# Context processor to inject settings into templates
+@app.context_processor
+def inject_settings():
+    return {
+        "settings": Settings.query.first()
+    }
 
 
 # Initialize Flask-Login

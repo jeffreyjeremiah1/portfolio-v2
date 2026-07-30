@@ -8,7 +8,22 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>{% block title %}Jeffrey Jeremiah{% endblock %}</title>
+    <title>
+    {% if settings and settings.meta_title %}
+        {{ settings.meta_title }}
+    {% elif settings %}
+        {{ settings.site_name }}
+    {% else %}
+        Jeffrey Jeremiah - Portfolio
+    {% endif %}
+    </title>
+
+    <!-- favicon  -->
+
+    {% if settings and settings.favicon %}
+    <link rel="icon"
+        href="{{ url_for('static', filename=settings.favicon) }}">
+    {% endif %}
 
     <!-- Bootstrap -->
 

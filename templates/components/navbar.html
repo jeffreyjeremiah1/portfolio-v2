@@ -2,9 +2,18 @@
 
     <div class="container">
 
-        <a class="navbar-brand fw-bold"
-           href="{{ url_for('public.home') }}">
-            Jeffrey Jeremiah
+        <a class="navbar-brand d-flex align-items-center"
+        href="{{ url_for('public.home') }}">
+
+            {% if settings and settings.logo %}
+                <img src="{{ url_for('static', filename=settings.logo) }}"
+                    alt="{{ settings.site_name }}"
+                    height="40"
+                    class="me-2">
+            {% endif %}
+
+            {{ settings.site_name if settings else "Jeffrey Jeremiah" }}
+
         </a>
 
         <button class="navbar-toggler"

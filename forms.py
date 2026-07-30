@@ -7,6 +7,7 @@ from wtforms import PasswordField
 from wtforms.validators import DataRequired
 from wtforms import BooleanField
 from wtforms import TextAreaField
+from wtforms import EmailField
 from wtforms.validators import Email, Length, EqualTo
 
 
@@ -143,3 +144,69 @@ class ChangePasswordForm(FlaskForm):
     )
 
     submit = SubmitField("Update Password")
+
+
+class SettingsForm(FlaskForm):
+
+    # General
+    site_name = StringField(
+        "Site Name",
+        validators=[DataRequired(), Length(max=100)]
+    )
+
+    tagline = StringField("Tagline")
+
+    about = TextAreaField("About")
+
+    # Contact
+    contact_email = EmailField("Contact Email")
+
+    phone = StringField("Phone")
+
+    address = StringField("Address")
+
+    # Social
+    github = StringField("GitHub")
+
+    linkedin = StringField("LinkedIn")
+
+    twitter = StringField("X (Twitter)")
+
+    facebook = StringField("Facebook")
+
+    instagram = StringField("Instagram")
+
+    youtube = StringField("YouTube")
+
+    # SEO
+    meta_title = StringField("Meta Title")
+
+    meta_description = TextAreaField("Meta Description")
+
+    meta_keywords = StringField("Meta Keywords")
+
+    # logo and favicon
+    logo = FileField(
+    "Site Logo",
+    validators=[
+        FileAllowed(
+            ["jpg", "jpeg", "png", "webp"],
+            "Images only."
+        )
+    ]
+    )
+
+    favicon = FileField(
+        "Favicon",
+        validators=[
+            FileAllowed(
+                ["png", "ico"],
+                "PNG or ICO only."
+            )
+        ]
+    )
+
+    # Footer
+    copyright_text = StringField("Copyright")
+
+    submit = SubmitField("Save Settings")
