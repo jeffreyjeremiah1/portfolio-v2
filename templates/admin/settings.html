@@ -1,0 +1,354 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1 class="fw-bold mb-4 text-body">
+        Site Settings
+    </h1>
+
+    <form method="POST"  enctype="multipart/form-data">
+
+    {{ form.hidden_tag() }}
+
+    <ul class="nav nav-tabs mb-4 " id="settingsTabs" role="tablist">
+
+    <li class="nav-item ">
+        <button class="nav-link active"
+                 type="button"
+                data-bs-toggle="tab"
+                data-bs-target="#general">
+
+             <i class="fa-solid fa-sliders me-2"></i>
+            General
+        </button>
+    </li>
+
+    <li class="nav-item">
+        <button class="nav-link"
+                type="button"
+                data-bs-toggle="tab"
+                data-bs-target="#contact">
+
+             <i class="fa-solid fa-address-card me-2"></i>
+            Contact
+        </button>
+    </li>
+
+    <li class="nav-item">
+        <button class="nav-link"
+                 type="button"
+                data-bs-toggle="tab"
+                data-bs-target="#social">
+
+            <i class="fa-solid fa-share-nodes me-2"></i>
+            Social
+        </button>
+    </li>
+
+    <li class="nav-item">
+        <button class="nav-link"
+                 type="button"
+                data-bs-toggle="tab"
+                data-bs-target="#seo">
+            <i class="fa-solid fa-magnifying-glass me-2"></i>
+            SEO
+        </button>
+    </li>
+
+    <li class="nav-item">
+        <button class="nav-link"
+                 type="button"
+                data-bs-toggle="tab"
+                data-bs-target="#branding">
+            <i class="fa-solid fa-palette me-2"></i>
+            Branding
+        </button>
+    </li>
+
+    <li class="nav-item">
+        <button
+            type="button"
+            class="nav-link"
+            data-bs-toggle="tab"
+            data-bs-target="#footer">
+
+            <i class="fa-solid fa-copyright me-2"></i>
+            Footer
+        </button>
+    </li>
+
+    </ul>
+
+   <!-- Tabs Content -->
+
+    <div class="tab-content">
+
+        <!-- General -->
+        <div class="tab-pane fade show active"
+             id="general">
+
+            <div class="card shadow">
+
+            <div class="card-body">
+
+                <div class="mb-3">
+                    {{ form.site_name.label(class="form-label") }}
+
+                    {% if form.site_name.errors %}
+
+                        {{ form.site_name(class="form-control is-invalid") }}
+
+                        <div class="invalid-feedback">
+                            {% for error in form.site_name.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+
+                    {% else %}
+
+                        {{ form.site_name(class="form-control") }}
+
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.tagline.label(class="form-label") }}
+
+                    {% if form.tagline.errors %}
+
+                        {{ form.tagline(class="form-control is-invalid") }}
+
+                        <div class="invalid-feedback">
+                            {% for error in form.tagline.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+
+                    {% else %}
+
+                        {{ form.tagline(class="form-control") }}
+
+                    {% endif %}
+
+                </div>
+
+                <div class="mb-3">              
+                    {{ form.about.label(class="form-label") }}
+
+                    {% if form.about.errors %}
+
+                        {{ form.about(class="form-control is-invalid" rows="4") }}
+
+                        <div class="invalid-feedback">
+                            {% for error in form.about.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+
+                    {% else %}
+
+                        {{ form.about(class="form-control" rows="4") }}
+
+                    {% endif %}
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="tab-pane fade"
+             id="contact">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="mb-3">
+                        {{ form.contact_email.label(class="form-label") }}
+                        {{ form.contact_email(class="form-control") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.phone.label(class="form-label") }}
+                        {{ form.phone(class="form-control") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.address.label(class="form-label") }}
+                        {{ form.address(class="form-control") }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Social -->
+        <div class="tab-pane fade" id="social">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="mb-3">
+                        {{ form.github.label(class="form-label") }}
+                        {{ form.github(class="form-control") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.linkedin.label(class="form-label") }}
+                        {{ form.linkedin(class="form-control") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.twitter.label(class="form-label") }}
+                        {{ form.twitter(class="form-control") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.facebook.label(class="form-label") }}
+                        {{ form.facebook(class="form-control") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.instagram.label(class="form-label") }}
+                        {{ form.instagram(class="form-control") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.youtube.label(class="form-label") }}
+                        {{ form.youtube(class="form-control") }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- SEO -->
+        <div class="tab-pane fade"
+             id="seo">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="mb-3">
+                        {{ form.meta_title.label(class="form-label") }}
+                        {{ form.meta_title(class="form-control") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.meta_description.label(class="form-label") }}
+                        {{ form.meta_description(class="form-control", rows="4") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.meta_keywords.label(class="form-label") }}
+                        {{ form.meta_keywords(class="form-control") }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Branding -->
+        <div class="tab-pane fade"
+             id="branding">
+
+            <!-- Logo & favicon upload goes here -->
+
+            <div class="row">
+
+            <div class="col-md-6">
+
+                <div class="card shadow-sm mb-4">
+
+                    <div class="card-body">
+
+                        <h5>Current Logo</h5>
+
+                        <img
+                            src="{{ url_for('static', filename=settings.logo) }}"
+                            class="img-fluid mb-3"
+                            style="max-height:100px;">
+
+                        {{ form.logo.label(class="form-label") }}
+
+                        {{ form.logo(class="form-control") }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="card shadow-sm mb-4">
+
+                    <div class="card-body">
+
+                        <h5>Current Favicon</h5>
+
+                        <img
+                            src="{{ url_for('static', filename=settings.favicon) }}"
+                            width="48"
+                            class="mb-3">
+
+                        {{ form.favicon.label(class="form-label") }}
+
+                        {{ form.favicon(class="form-control") }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Footer -->
+        <div class="tab-pane fade" id="footer">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="mb-3">
+
+                        {{ form.copyright_text.label(class="form-label") }}
+
+                        {{ form.copyright_text(class="form-control") }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Submit Button -->
+    <div class="text-end mt-4">
+        {{ form.submit(class="btn btn-primary px-4") }}
+    </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

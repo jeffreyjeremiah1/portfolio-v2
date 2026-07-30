@@ -1,12 +1,13 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_wtf import form
-from models import db, Project, Message, User
-from forms import ProjectForm, EditProfileForm, ChangePasswordForm
+from models import db, Project, Message, User, Settings
+from forms import ProjectForm, EditProfileForm, ChangePasswordForm, SettingsForm
 import os
 from werkzeug.utils import secure_filename
 from flask import current_app
 from flask_login import login_required, current_user
-from utils import save_profile_image, delete_profile_image
+from utils import delete_image, save_image, delete_image
+from werkzeug.datastructures import FileStorage
 
 
 admin = Blueprint("admin", __name__)
@@ -287,10 +288,12 @@ def edit_profile():
 
         if form.profile_image.data:
 
-            delete_profile_image(current_user.profile_image)
+            delete_image(current_user.profile_image)
 
-            current_user.profile_image = save_profile_image(
-                form.profile_image.data
+            current_user.profile_image = save_image(
+                form.profile_image.data,
+                "uploads/profiles",
+                (300, 300)
             )
 
         db.session.commit()
@@ -348,4 +351,110 @@ def change_password():
     return render_template(
         "admin/change_password.html",
         form=form
+    )
+
+
+@admin.route("/settings", methods=["GET", "POST"])
+@login_required
+def settings():
+
+    settings = Settings.query.first()
+
+
+    if settings is None:
+        settings = Settings()
+        db.session.add(settings)
+        db.session.commit()
+
+    form = SettingsForm()
+
+
+
+    if request.method == "GET":
+        form.site_name.data = settings.site_name
+        form.tagline.data = settings.tagline
+        form.about.data = settings.about
+
+        form.contact_email.data = settings.contact_email
+        form.phone.data = settings.phone
+        form.address.data = settings.address
+
+        form.github.data = settings.github
+        form.linkedin.data = settings.linkedin
+        form.twitter.data = settings.twitter
+        form.facebook.data = settings.facebook
+        form.instagram.data = settings.instagram
+        form.youtube.data = settings.youtube
+
+        form.meta_title.data = settings.meta_title
+        form.meta_description.data = settings.meta_description
+        form.meta_keywords.data = settings.meta_keywords
+
+        form.copyright_text.data = settings.copyright_text
+
+
+
+    if form.validate_on_submit():
+
+        # Update normal text fields
+        settings.site_name = form.site_name.data
+        settings.tagline = form.tagline.data
+        settings.about = form.about.data
+
+        settings.contact_email = form.contact_email.data
+        settings.phone = form.phone.data
+        settings.address = form.address.data
+
+        settings.github = form.github.data
+        settings.linkedin = form.linkedin.data
+        settings.twitter = form.twitter.data
+        settings.facebook = form.facebook.data
+        settings.instagram = form.instagram.data
+        settings.youtube = form.youtube.data
+
+        settings.meta_title = form.meta_title.data
+        settings.meta_description = form.meta_description.data
+        settings.meta_keywords = form.meta_keywords.data
+
+        settings.copyright_text = form.copyright_text.data
+
+        # Handle uploads separately
+        if isinstance(form.logo.data, FileStorage) and form.logo.data.filename:
+
+            delete_image(settings.logo)
+
+            print("=" * 50)
+            print("Logo data:", form.logo.data)
+            print("Logo type:", type(form.logo.data))
+            print("=" * 50)
+
+            settings.logo = save_image(
+                form.logo.data,
+                "uploads/site/logos",
+                (600, 200)
+            )
+
+        if isinstance(form.favicon.data, FileStorage) and form.favicon.data.filename:
+
+            delete_image(settings.favicon)
+
+            settings.favicon = save_image(
+                form.favicon.data,
+                "uploads/site/favicons",
+                (64, 64)
+            )
+
+        db.session.commit()
+
+        flash(
+            "Settings updated successfully.",
+            "success"
+        )
+
+        return redirect(url_for("admin.settings"))
+
+    return render_template(
+        "admin/settings.html",
+        form=form,
+        settings=settings
     )
