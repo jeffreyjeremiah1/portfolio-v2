@@ -168,18 +168,66 @@
                 <div class="card-body">
 
                     <div class="mb-3">
-                        {{ form.contact_email.label(class="form-label") }}
-                        {{ form.contact_email(class="form-control") }}
+
+                        {{ form.contact.label(class="form-label") }}
+
+                        {% if form.contact.errors %}
+
+                            {{ form.contact(class="form-control is-invalid" rows="4") }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.contact.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+
+                            {{ form.contact(class="form-control") }}
+
+                        {% endif %}
                     </div>
 
                     <div class="mb-3">
+
                         {{ form.phone.label(class="form-label") }}
-                        {{ form.phone(class="form-control") }}
+
+                        {% if form.phone.errors %}
+
+                            {{ form.phone(class="form-control is-invalid") }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.phone.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+
+                            {{ form.phone(class="form-control") }}
+
+                        {% endif %}
                     </div>
 
                     <div class="mb-3">
+
                         {{ form.address.label(class="form-label") }}
-                        {{ form.address(class="form-control") }}
+
+                        {% if form.address.errors %}
+
+                            {{ form.address(class="form-control is-invalid" ) }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.address.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+
+                            {{ form.address(class="form-control" ) }}
+
+                        {% endif %}
                     </div>
 
                 </div>
