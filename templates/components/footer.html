@@ -1,55 +1,99 @@
-<footer class="bg-dark text-white mt-5 py-4">
+<footer class="py-5 bg-dark text-white mt-5">
+
     <div class="container">
 
         <div class="row">
 
-            <div class="col-md-6">
-                <h5>{{ settings.site_name if settings else "Portfolio" }}</h5>
+            <div class="col-lg-6">
 
-                <p class="mb-0">
-                    {{ settings.tagline if settings else "" }}
+                <h5>
+
+                    {{ settings.site_name }}
+
+                </h5>
+
+                <p>
+
+                    {{ settings.tagline }}
+
                 </p>
+
             </div>
 
-            <div class="col-md-6 text-md-end">
+            <div class="col-lg-6 text-lg-end">
 
-                {% if settings and settings.github %}
-                    <a href="{{ settings.github }}" class="text-white me-3">
-                        <i class="fa-brands fa-github fa-lg"></i>
-                    </a>
+                {% if settings.github %}
+                <a
+                    href="{{ settings.github }}"
+                    class="text-white me-3">
+
+                    <i class="fab fa-github"></i>
+
+                </a>
                 {% endif %}
 
-                {% if settings and settings.linkedin %}
-                    <a href="{{ settings.linkedin }}" class="text-white me-3">
-                        <i class="fa-brands fa-linkedin fa-lg"></i>
-                    </a>
+                {% if settings.linkedin %}
+                <a
+                    href="{{ settings.linkedin }}"
+                    class="text-white me-3">
+
+                    <i class="fab fa-linkedin"></i>
+
+                </a>
                 {% endif %}
 
-                {% if settings and settings.facebook %}
-                    <a href="{{ settings.facebook }}" class="text-white me-3">
-                        <i class="fa-brands fa-facebook fa-lg"></i>
-                    </a>
+                {% if settings.twitter %}
+                <a
+                    href="{{ settings.twitter }}"
+                    class="text-white me-3">
+
+                    <i class="fab fa-x-twitter"></i>
+
+                </a>
                 {% endif %}
 
-                {% if settings and settings.instagram %}
-                    <a href="{{ settings.instagram }}" class="text-white">
-                        <i class="fa-brands fa-instagram fa-lg"></i>
-                    </a>
+                {% if settings.instagram %}
+                <a
+                    href="{{ settings.instagram }}"
+                    class="text-white me-3">
+
+                    <i class="fab fa-instagram"></i>
+
+                </a>
+                {% endif %}
+
+                {% if settings.facebook %}
+                <a
+                    href="{{ settings.facebook }}"
+                    class="text-white me-3">
+
+                    <i class="fab fa-facebook"></i>
+
+                </a>
+                {% endif %}
+
+                {% if settings.youtube %}
+                <a
+                    href="{{ settings.youtube }}"
+                    class="text-white">
+
+                    <i class="fab fa-youtube"></i>
+
+                </a>
                 {% endif %}
 
             </div>
 
         </div>
 
-        <hr class="border-secondary">
+        <hr>
 
         <div class="text-center">
 
-            {{ settings.copyright_text
-                if settings
-                else "© 2026 Portfolio. All rights reserved." }}
+            {{ settings.copyright_text }}
 
         </div>
 
     </div>
+
 </footer>

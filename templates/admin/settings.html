@@ -141,7 +141,7 @@
 
                     {% if form.about.errors %}
 
-                        {{ form.about(class="form-control is-invalid" rows="4") }}
+                        {{ form.about(class="form-control is-invalid", rows="4") }}
 
                         <div class="invalid-feedback">
                             {% for error in form.about.errors %}
@@ -151,7 +151,7 @@
 
                     {% else %}
 
-                        {{ form.about(class="form-control" rows="4") }}
+                        {{ form.about(class="form-control", rows="4") }}
 
                     {% endif %}
                 </div>
@@ -169,21 +169,21 @@
 
                     <div class="mb-3">
 
-                        {{ form.contact.label(class="form-label") }}
+                        {{ form.contact_email.label(class="form-label") }}
 
-                        {% if form.contact.errors %}
+                        {% if form.contact_email.errors %}
 
-                            {{ form.contact(class="form-control is-invalid" rows="4") }}
+                            {{ form.contact(class="form-control is-invalid") }}
 
                             <div class="invalid-feedback">
-                                {% for error in form.contact.errors %}
+                                {% for error in form.contact_email.errors %}
                                     {{ error }}
                                 {% endfor %}
                             </div>
 
                         {% else %}
 
-                            {{ form.contact(class="form-control") }}
+                            {{ form.contact_email(class="form-control") }}
 
                         {% endif %}
                     </div>
@@ -245,32 +245,126 @@
 
                     <div class="mb-3">
                         {{ form.github.label(class="form-label") }}
-                        {{ form.github(class="form-control") }}
+
+                        {% if form.github.errors %}
+
+                            {{ form.github(class="form-control is-invalid" ) }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.github.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+
+                            {{ form.github(class="form-control" ) }}
+
+                        {% endif %}
                     </div>
 
                     <div class="mb-3">
+            
                         {{ form.linkedin.label(class="form-label") }}
-                        {{ form.linkedin(class="form-control") }}
+
+                        {% if form.linkedin.errors %}
+
+                            {{ form.linkedin(class="form-control is-invalid" ) }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.linkedin.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+
+                            {{ form.linkedin(class="form-control" ) }}
+
+                        {% endif %}
                     </div>
 
                     <div class="mb-3">
+
                         {{ form.twitter.label(class="form-label") }}
-                        {{ form.twitter(class="form-control") }}
+
+                        {% if form.twitter.errors %}
+
+                            {{ form.twitter(class="form-control is-invalid" ) }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.twitter.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+
+                            {{ form.twitter(class="form-control" ) }}
+
+                        {% endif %}
                     </div>
 
                     <div class="mb-3">
                         {{ form.facebook.label(class="form-label") }}
-                        {{ form.facebook(class="form-control") }}
+
+                        {% if form.facebook.errors %}
+
+                            {{ form.facebook(class="form-control is-invalid" ) }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.facebook.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+
+                            {{ form.facebook(class="form-control" ) }}
+
+                        {% endif %}
                     </div>
 
                     <div class="mb-3">
+                       
                         {{ form.instagram.label(class="form-label") }}
-                        {{ form.instagram(class="form-control") }}
+
+                        {% if form.instagram.errors %}
+
+                            {{ form.instagram(class="form-control is-invalid" ) }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.instagram.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+
+                            {{ form.instagram(class="form-control" ) }}
+
+                        {% endif %}
                     </div>
 
                     <div class="mb-3">
+                    
                         {{ form.youtube.label(class="form-label") }}
-                        {{ form.youtube(class="form-control") }}
+
+                        {% if form.youtube.errors %}
+
+                            {{ form.youtube(class="form-control is-invalid" ) }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.youtube.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+
+                            {{ form.youtube(class="form-control" ) }}
+
+                        {% endif %}
                     </div>
 
                 </div>
@@ -288,18 +382,70 @@
                 <div class="card-body">
 
                     <div class="mb-3">
+
                         {{ form.meta_title.label(class="form-label") }}
-                        {{ form.meta_title(class="form-control") }}
+
+                        {% if form.meta_title.errors %}
+
+                            {{ form.meta_title(class="form-control is-invalid" ) }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.meta_title.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+
+                            {{ form.meta_title(class="form-control" ) }}
+
+                        {% endif %}
                     </div>
 
                     <div class="mb-3">
+                        
                         {{ form.meta_description.label(class="form-label") }}
-                        {{ form.meta_description(class="form-control", rows="4") }}
+
+                        {% if form.meta_description.errors %}
+
+                            {{ form.meta_description(class="form-control is-invalid", rows="4" ) }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.meta_description.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+
+                            {{ form.meta_description(class="form-control" ) }}
+
+                        {% endif %}
                     </div>
 
                     <div class="mb-3">
                         {{ form.meta_keywords.label(class="form-label") }}
                         {{ form.meta_keywords(class="form-control") }}
+
+                        {{ form.meta_keywords.label(class="form-label") }}
+
+                        {% if form.meta_keywords.errors %}
+
+                            {{ form.meta_keywords(class="form-control is-invalid", rows="4" ) }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.meta_keywords.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+
+                            {{ form.meta_keywords(class="form-control" ) }}
+
+                        {% endif %}
+
+                        
                     </div>
 
                 </div>
@@ -329,9 +475,33 @@
                             class="img-fluid mb-3"
                             style="max-height:100px;">
 
+                        <p class="text-success small mb-3">
+                            <i class="fa-solid fa-circle-check me-1"></i>
+                            Current logo uploaded
+                        </p>
+
                         {{ form.logo.label(class="form-label") }}
 
-                        {{ form.logo(class="form-control") }}
+                        {% if form.logo.errors %}
+
+                            {{ form.logo(class="form-control is-invalid") }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.logo.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+
+                            {{ form.logo(class="form-control") }}
+
+                        {% endif %}
+
+                        <div class="form-text">
+                            Recommended size: 600 × 200 pixels.
+                            PNG or JPG.
+                        </div>
 
                     </div>
 
@@ -352,9 +522,33 @@
                             width="48"
                             class="mb-3">
 
+                        <p class="text-success small mb-3">
+                            <i class="fa-solid fa-circle-check me-1"></i>
+                            Current favicon uploaded
+                        </p>
+
                         {{ form.favicon.label(class="form-label") }}
 
-                        {{ form.favicon(class="form-control") }}
+                        {% if form.favicon.errors %}
+
+                            {{ form.favicon(class="form-control is-invalid") }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.favicon.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+
+                            {{ form.favicon(class="form-control") }}
+
+                        {% endif %}
+
+                        <div class="form-text">
+                            Recommended size: 64 × 64 pixels.
+                            ICO or PNG.
+                        </div>
 
                     </div>
 
@@ -378,7 +572,21 @@
 
                         {{ form.copyright_text.label(class="form-label") }}
 
-                        {{ form.copyright_text(class="form-control") }}
+                        {% if form.copyright_text.errors %}
+
+                            {{ form.copyright_text(class="form-control is-invalid") }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.copyright_text.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+
+                            {{ form.copyright_text(class="form-control" ) }}
+
+                        {% endif %}
 
                     </div>
 
