@@ -24,6 +24,27 @@ class Project(db.Model):
 
     technologies = db.Column(db.String(255))
 
+    featured = db.Column(
+    db.Boolean,
+    default=False
+    )
+
+    published = db.Column(
+        db.Boolean,
+        default=True
+    )
+
+    display_order = db.Column(
+        db.Integer,
+        default=0
+    )
+
+    updated_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
+    )
+
     def __repr__(self):
         return f"<Project {self.title}>"
     

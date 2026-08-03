@@ -40,6 +40,21 @@
             {{ form.technologies(class="form-control") }}
         </div>
 
+        <div class="mb-3">
+            {{ form.featured() }}
+            {{ form.featured.label }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.published() }}
+            {{ form.published.label }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.display_order.label }}
+            {{ form.display_order(class="form-control") }}
+        </div>
+
         <button class="btn btn-success">
             Save Changes
         </button>

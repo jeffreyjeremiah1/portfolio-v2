@@ -8,21 +8,25 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
+    <meta name="description"
+          content="{{ settings.meta_description }}">
+
+    <meta name="keywords"
+          zcontent="{{ settings.meta_keywords }}">
+
     <title>
-    {% if settings and settings.meta_title %}
-        {{ settings.meta_title }}
-    {% elif settings %}
-        {{ settings.site_name }}
-    {% else %}
-        Jeffrey Jeremiah - Portfolio
-    {% endif %}
+        {% block title %}{% endblock %}
+        {% if self.title() %}
+        | 
+        {% endif %}
+        {{ settings.meta_title or settings.site_name }}
     </title>
 
     <!-- favicon  -->
 
     {% if settings and settings.favicon %}
-    <link rel="icon"
-        href="{{ url_for('static', filename=settings.favicon) }}">
+        <link rel="icon"
+            href="{{ url_for('static', filename=settings.favicon) }}">
     {% endif %}
 
     <!-- Bootstrap -->

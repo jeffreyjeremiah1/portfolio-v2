@@ -4,6 +4,7 @@ from wtforms import StringField
 from wtforms import SubmitField
 from wtforms import TextAreaField
 from wtforms import PasswordField
+from wtforms import IntegerField
 from wtforms.validators import DataRequired
 from wtforms import BooleanField
 from wtforms import TextAreaField
@@ -50,10 +51,22 @@ class ProjectForm(FlaskForm):
 
     image = FileField(
     "Project Image",
-    validators=[
-        FileAllowed(["jpg", "jpeg", "png", "webp"], "Images only!")
-    ]
-)
+        validators=[
+            FileAllowed(["jpg", "jpeg", "png", "webp"], "Images only!")
+        ]
+    )
+    featured = BooleanField("Featured Project")
+
+    published = BooleanField(
+        "Published",
+        default=True
+    )
+
+    display_order = IntegerField(
+        "Display Order",
+        default=0
+    )
+
     
 class ContactForm(FlaskForm):
 
@@ -159,7 +172,13 @@ class SettingsForm(FlaskForm):
     about = TextAreaField("About")
 
     # Contact
-    contact_email = EmailField("Contact Email")
+    contact_email = EmailField(
+        "Contact Email",
+        validators=[
+            Email(),
+            Length(max=120)
+        ]
+    )
 
     phone = StringField("Phone")
 

@@ -28,13 +28,6 @@ def inject_admin_stats():
     return {"unread_messages": 0}
 
 
-# Context processor to inject settings into templates
-@app.context_processor
-def inject_settings():
-    return {
-        "settings": Settings.query.first()
-    }
-
 
 # Initialize Flask-Login
 
@@ -59,12 +52,12 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 
-
 # Register blueprints
 
 app.register_blueprint(public)
 app.register_blueprint(admin)
 app.register_blueprint(auth)
+
 
 # User loader for Flask-Login
 
@@ -72,6 +65,12 @@ app.register_blueprint(auth)
 def load_user(user_id):
     return db.session.get(User, int(user_id))
 
+# Context processor to inject settings into templates
+@app.context_processor
+def inject_settings():
+    return {
+        "settings": Settings.query.first()
+    }
 
 # Error handlers
 @app.errorhandler(404)
