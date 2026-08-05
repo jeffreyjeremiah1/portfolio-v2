@@ -5,6 +5,7 @@ from wtforms import SubmitField
 from wtforms import TextAreaField
 from wtforms import PasswordField
 from wtforms import IntegerField
+from flask_wtf.file import MultipleFileField
 from wtforms.validators import DataRequired
 from wtforms import BooleanField
 from wtforms import TextAreaField
@@ -55,6 +56,17 @@ class ProjectForm(FlaskForm):
             FileAllowed(["jpg", "jpeg", "png", "webp"], "Images only!")
         ]
     )
+
+    gallery = MultipleFileField(
+        "Project Gallery",
+        validators=[
+            FileAllowed(
+                ["jpg", "jpeg", "png", "webp"],
+                "Images only."
+            )
+        ]
+    )
+
     featured = BooleanField("Featured Project")
 
     published = BooleanField(

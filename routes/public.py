@@ -13,7 +13,15 @@ def home():
 
     form = ContactForm()
 
-    projects = Project.query.all()
+    projects = (
+        Project.query
+        .filter_by(
+            published=True,
+            featured=True
+        )
+        .order_by(Project.display_order.asc())
+        .all()
+    )
 
     if form.validate_on_submit():
 
