@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_wtf import form
-from models import db, Project, Message, User, Settings
+from models import db, Project, ProjectImage, Message, User, Settings
 from forms import ProjectForm, EditProfileForm, ChangePasswordForm, SettingsForm
 import os
 from werkzeug.utils import secure_filename
@@ -124,35 +124,72 @@ def add_project():
         form=form
     )
 
+
 @admin.route("/admin/edit/<int:id>", methods=["GET", "POST"])
 @login_required
 def edit_project(id):
 
     project = db.get_or_404(Project, id)
 
-    form = ProjectForm(obj=project)
+    form = ProjectForm()
+
+
+    if request.method == "GET":
+        form.title.data = project.title
+        form.description.data = project.description
+        form.github.data = project.github
+        form.demo.data = project.demo
+        form.technologies.data = project.technologies
+
+        form.featured.data = project.featured
+        form.published.data = project.published
+        form.display_order.data = project.display_order
 
     if form.validate_on_submit():
 
-        if form.image.data:
+        project.title = form.title.data
+        project.description = form.description.data
+        project.github = form.github.data
+        project.demo = form.demo.data
+        project.technologies = form.technologies.data
 
-            image = form.image.data
+        project.featured = form.featured.data
+        project.published = form.published.data
+        project.display_order = form.display_order.data
 
-            filename = secure_filename(image.filename)
+        
+        if (
+            isinstance(form.image.data, FileStorage)
+            and form.image.data.filename
+        ):
 
-            image.save(
-                os.path.join(
-                current_app.config["UPLOAD_FOLDER"],
-                filename
+            delete_image(project.image)
+
+            project.image = save_image(
+                form.image.data,
+                "uploads/projects",
+                (1200, 800)
             )
-                )
 
-            project.image = f"uploads/{filename}"
+        if form.gallery.data:
 
-        form.populate_obj(project)
+            for image in form.gallery.data:
 
-        if filename:
-            project.image = f"uploads/{filename}"
+                if image.filename:
+
+                    image_path = save_image(
+                        image,
+                        "uploads/projects/gallery",
+                        (1600, 900)
+                    )
+
+                    gallery_image = ProjectImage(
+                        image=image_path,
+                        project=project
+                    )
+
+                    db.session.add(gallery_image)
+
 
         db.session.commit()
 
@@ -164,6 +201,35 @@ def edit_project(id):
         "admin/edit_project.html",
         form=form,
         project=project
+    )
+
+
+@admin.route("/gallery/delete/<int:id>")
+@login_required
+def delete_project_image(id):
+
+    image = db.get_or_404(ProjectImage, id)
+
+    # Save the project id BEFORE deleting
+    project_id = image.project_id
+
+    # Delete the file
+    delete_image(image.image)
+
+    # Delete the database record
+    db.session.delete(image)
+    db.session.commit()
+
+    flash(
+        "Gallery image deleted successfully.",
+        "success"
+    )
+
+    return redirect(
+        url_for(
+            "admin.edit_project",
+            id=project_id
+        )
     )
 
 @admin.route("/admin/delete/<int:id>", methods=["POST"])

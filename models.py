@@ -45,9 +45,50 @@ class Project(db.Model):
         onupdate=datetime.utcnow
     )
 
+    images = db.relationship(
+        "ProjectImage",
+        backref="project",
+        lazy=True,
+        cascade="all, delete-orphan",
+        order_by="ProjectImage.display_order"
+    )
+
+
     def __repr__(self):
         return f"<Project {self.title}>"
     
+
+
+class ProjectImage(db.Model):
+    __tablename__ = "project_images"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    image = db.Column(
+        db.String(255),
+        nullable=False
+    )
+
+    caption = db.Column(
+        db.String(255)
+    )
+
+    display_order = db.Column(
+        db.Integer,
+        default=0
+    )
+
+    created_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow
+    )
+
+    project_id = db.Column(
+        db.Integer,
+        db.ForeignKey("projects.id"),
+        nullable=False
+    )
+
 
 
 class User(UserMixin, db.Model):

@@ -50,14 +50,16 @@
             <thead>
 
                 <tr>
-
+                    <th>ID</th>
                     <th>Image</th>
                     <th>Title</th>
+                    <th>Status</th>
+                    <th>Featured</th>
+                    <th>Order</th>
                     <th>Technologies</th>
                     <th>GitHub</th>
                     <th>Demo</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>Actions</th>
 
                 </tr>
 
@@ -68,6 +70,7 @@
             {% for project in projects.items %}
 
                 <tr>
+                    <td>{{ project.id }}</td>
 
                     <td width="90">
 
@@ -95,6 +98,24 @@
                         </strong>
 
                     </td>
+
+                     <td>
+                        {% if project.published %}
+                            <span class="badge bg-success">Published</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Draft</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if project.featured %}
+                            <span class="badge bg-warning text-dark">
+                                Featured
+                            </span>
+                        {% endif %}
+                    </td>
+
+                    <td>{{ project.display_order }}</td>
 
                     <td>
 
@@ -136,28 +157,19 @@
 
                     <td>
 
-                        <a
-                            href="{{ url_for('admin.edit_project', id=project.id) }}"
-                            class="btn btn-warning btn-sm">
+                        <a href="{{ url_for('admin.edit_project', id=project.id) }}"
+                        class="btn btn-sm btn-outline-primary">
 
-                            Edit
+                            <i class="fa-solid fa-pen"></i>
 
                         </a>
 
-                    </td>
+                        <a href="{{ url_for('admin.delete_project', id=project.id) }}"
+                        class="btn btn-sm btn-outline-danger">
 
-                    <td>
+                            <i class="fa-solid fa-trash"></i>
 
-                        <button
-                            class="btn btn-danger btn-sm delete-btn"
-                            data-bs-toggle="modal"
-                            data-bs-target="#deleteModal"
-                            data-id="{{ project.id }}"
-                            data-title="{{ project.title }}">
-
-                            Delete
-
-                        </button>
+                        </a>
 
                     </td>
 

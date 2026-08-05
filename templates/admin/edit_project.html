@@ -25,6 +25,75 @@
             {{ form.image(class="form-control") }}
         </div>
 
+        <div class="card shadow-sm mt-4">
+
+            <div class="card-header">
+                <h5 class="mb-0">
+                    Project Gallery
+                </h5>
+            </div>
+
+            <div class="card-body">
+
+                {{ form.gallery.label(class="form-label") }}
+
+                {{ form.gallery(
+                    class="form-control",
+                    multiple=True
+                ) }}
+
+                <small class="text-muted">
+                    You can select multiple screenshots.
+                </small>
+
+            </div>
+
+        </div>
+
+        {% if project.images %}
+
+        <hr>
+
+        <h5 class="mb-3">
+            Gallery Images
+        </h5>
+
+        <div class="row">
+
+        {% for image in project.images %}
+
+        <div class="col-lg-3 col-md-4 col-6 mb-4">
+
+            <div class="card shadow-sm">
+
+                <img
+                    src="{{ url_for('static', filename=image.image) }}"
+                    class="card-img-top"
+                    style="height:180px; object-fit:cover;">
+
+                <div class="card-body text-center">
+
+                    <a
+                        href="{{ url_for('admin.delete_project_image', id=image.id) }}"
+                        class="btn btn-sm btn-danger"
+                        onclick="return confirm('Delete this image?')">
+
+                        <i class="fa-solid fa-trash"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+        </div>
+
+        {% endif %}
+
         <div class="mb-3">
             {{ form.github.label }}
             {{ form.github(class="form-control") }}
