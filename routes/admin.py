@@ -3,6 +3,7 @@ from flask_wtf import form
 from models import db, Project, ProjectImage, Message, User, Settings
 from forms import ProjectForm, EditProfileForm, ChangePasswordForm, SettingsForm
 import os
+from slugify import slugify
 from werkzeug.utils import secure_filename
 from flask import current_app
 from flask_login import login_required, current_user
@@ -112,6 +113,9 @@ def add_project():
             technologies=form.technologies.data,
         )
 
+        # Generate a slug from the title
+        project.slug = slugify(form.title.data)
+
         db.session.add(project)
         db.session.commit()
 
@@ -156,6 +160,9 @@ def edit_project(id):
         project.featured = form.featured.data
         project.published = form.published.data
         project.display_order = form.display_order.data
+
+        # Generate a slug from the title
+        project.slug = slugify(form.title.data)
 
         
         if (

@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ project.title }}
+{% endblock %}
+
+{% block content %}
+
+<section class="project-hero py-5">
+
+<div class="container">
+
+    <div class="row align-items-center">
+
+        <div class="col-lg-6">
+
+            <p class="text-uppercase text-primary fw-semibold">
+
+            Featured Project
+
+            </p>
+
+            <h1 class="display-3 fw-bold">
+
+            {{ project.title }}
+
+            </h1>
+
+            <p class="lead">
+
+            {{ project.description }}
+
+            </p>
+
+            <div class="mt-4">
+
+                {% if project.github %}
+                <a href="{{ project.github }}"
+                   class="btn btn-dark me-2"
+                   target="_blank">
+
+                    <i class="fab fa-github me-2"></i>
+                    GitHub
+
+                </a>
+                {% endif %}
+
+                {% if project.demo %}
+                <a href="{{ project.demo }}"
+                   class="btn btn-primary"
+                   target="_blank">
+
+                   <i class="fa-solid fa-arrow-up-right-from-square me-2"></i>
+                    Live Demo
+
+                </a>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <img
+                src="{{ url_for('static',
+                filename=project.image) }}"
+                class="img-fluid rounded shadow">
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+<div class="container mb-5">
+
+<div class="row text-center">
+
+    <div class="col-md-3">
+
+        <div class="card h-100 border-0 shadow-sm">
+
+            <div class="card-body">
+
+                <small class="text-muted">
+                    Client
+                </small>
+
+                <h6 class="mt-2">
+                    {{ project.client or "Personal Project" }}
+                </h6>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card h-100 border-0 shadow-sm">
+
+            <div class="card-body">
+
+                <small class="text-muted">
+                    Role
+                </small>
+
+                <h6 class="mt-2">
+                    {{ project.role or "Not Specified" }}
+                </h6>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-3">
+
+        <div class="card h-100 border-0 shadow-sm">
+
+            <div class="card-body">
+
+                <small class="text-muted">
+                    Duration
+                </small>
+
+                <h6 class="mt-2">
+                    {{ project.duration or "Not Specified" }}
+                </h6>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card h-100 border-0 shadow-sm">
+
+            <div class="card-body">
+
+                <small class="text-muted">
+                    Date
+                </small>
+
+                <h6 class="mt-2">
+                    {% if project.project_date %}
+                        {{ project.project_date.strftime("%B %Y") }}
+                    {% else %}
+                        Not specified
+                    {% endif %}
+                </h6>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+</div>
+
+<div class="container mb-5">
+
+<h3 class="mb-4">
+
+Technologies Used
+
+</h3>
+
+{% for tech in project.technologies.split(",") %}
+
+<span class="tech-badge">
+
+{{ tech.strip() }}
+
+</span>
+
+{% endfor %}
+
+</div>
+
+<div class="container py-5">
+
+    <h2 class="fw-bold mb-4">
+
+        Project Gallery
+
+    </h2>
+
+    {% if project.images %}
+
+    <div class="row g-4">
+
+        {% for image in project.images %}
+
+        <div class="col-lg-4 col-md-6">
+
+            <a
+                href="{{ url_for('static', filename=image.image) }}"
+                class="project-gallery"
+                data-gallery="portfolio"
+                data-title="{{ project.title }}">
+                
+                <img
+                    src="{{ url_for('static', filename=image.image) }}"
+                    class="img-fluid rounded shadow-sm gallery-image"
+                    alt="{{ project.title }}">
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="text-center py-5">
+
+        <img
+            src="{{ url_for('static', filename=project.image) }}"
+            class="img-fluid rounded shadow"
+            style="max-width:900px;"
+            alt="{{ project.title }}">
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+<div class="container py-5">
+
+<div class="row">
+
+{% if previous_project %}
+
+<div class="col-md-6 mb-3">
+
+<a
+href="{{ url_for('public.project_detail',
+slug=previous_project.slug) }}"
+class="project-nav-card previous">
+
+<small class="text-muted">
+Previous Project
+</small>
+
+<h5>
+← {{ previous_project.title }}
+</h5>
+
+</a>
+
+</div>
+
+{% endif %}
+
+{% if next_project %}
+
+<div class="col-md-6 mb-3 text-md-end">
+
+<a
+href="{{ url_for('public.project_detail',
+slug=next_project.slug) }}"
+class="project-nav-card next">
+
+<small class="text-muted">
+Next Project
+</small>
+
+<h5>
+{{ next_project.title }} →
+</h5>
+
+</a>
+
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+{% endblock %}

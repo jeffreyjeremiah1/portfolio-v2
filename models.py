@@ -53,6 +53,16 @@ class Project(db.Model):
         order_by="ProjectImage.display_order"
     )
 
+    client = db.Column(db.String(100))
+    role = db.Column(db.String(100))
+    project_date = db.Column(db.Date)
+    duration = db.Column(db.String(50))
+
+    slug = db.Column(
+        db.String(200),
+        unique=True,
+        nullable=False
+    )
 
     def __repr__(self):
         return f"<Project {self.title}>"
