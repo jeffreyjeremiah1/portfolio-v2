@@ -48,3 +48,48 @@ def home():
         form=form
     )
 
+@public.route("/projects/<slug>")
+def project_detail(slug):
+
+    project = Project.query.filter_by(
+        slug=slug,
+        published=True
+    ).first_or_404()
+
+    previous_project = (
+        Project.query
+        .filter(
+            Project.id < project.id,
+            Project.published == True
+        )
+        .order_by(Project.id.desc())
+        .first()
+    )
+
+    next_project = (
+        Project.query
+        .filter(
+            Project.id > project.id,
+            Project.published == True
+        )
+        .order_by(Project.id.asc())
+        .first()
+    )
+
+    related_projects = (
+        Project.query
+        .filter(
+            Project.id != project.id,
+            Project.published == True
+        )
+        .limit(3)
+        .all()
+    )
+
+    return render_template(
+        "project_detail.html",
+        project=project,
+        previous_project=previous_project,
+        next_project=next_project,
+        related_projects=related_projects
+    )
