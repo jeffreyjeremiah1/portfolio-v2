@@ -11,32 +11,92 @@
         {{ form.hidden_tag() }}
 
         <div class="mb-3 text-body">
-            {{ form.title.label }}
+            {{ form.title.label(class="form-label") }}
             {{ form.title(class="form-control") }}
         </div>
 
         <div class="mb-3 text-body">
-            {{ form.description.label }}
+            {{ form.description.label(class="form-label") }}
             {{ form.description(class="form-control") }}
         </div>
 
+        <div class="mb-4">
+
+            {{ form.challenge_text.label(class="form-label") }}
+
+            {{ form.challenge_text(
+                class="form-control",
+                rows="6",
+                placeholder="What problem was this project solving?"
+            ) }}
+
+        </div>
+
+        <div class="mb-4">
+
+            {{ form.solution_text.label(class="form-label") }}
+
+            {{ form.solution_text(
+                class="form-control",
+                rows="6",
+                placeholder="How did you solve the problem?"
+            ) }}
+
+        </div>
+
+        <div class="mb-4">
+
+            {{ form.development_process.label(class="form-label") }}
+
+            {{ form.development_process(
+                class="form-control",
+                rows="6",
+                placeholder="Describe your development or design process..."
+            ) }}
+
+        </div>
+
+        <div class="mb-4">
+
+            {{ form.results_text.label(class="form-label") }}
+
+            {{ form.results_text(
+                class="form-control",
+                rows="6",
+                placeholder="What was the outcome of the project?"
+            ) }}
+
+        </div>
+
+        <div class="mb-4">
+
+            {{ form.lessons_text.label(class="form-label") }}
+
+            {{ form.lessons_text(
+                class="form-control",
+                rows="6",
+                placeholder="What did you learn from this project?"
+            ) }}
+
+        </div>
+
         <div class="mb-3 text-body">
-            {{ form.image.label }}
+            {{ form.image.label(class="form-label") }}
             {{ form.image(class="form-control") }}
         </div>
 
         <div class="mb-3 text-body">
-            {{ form.github.label }}
+            {{ form.github.label(class="form-label") }}
             {{ form.github(class="form-control") }}
         </div>
 
         <div class="mb-3 text-body">
-            {{ form.demo.label }}
+            {{ form.demo.label(class="form-label") }}
             {{ form.demo(class="form-control") }}
         </div>
 
         <div class="mb-3 text-body">
-            {{ form.technologies.label }}
+            {{ form.technologies.label(class="form-label") }}
             {{ form.technologies(class="form-control") }}
         </div>
 

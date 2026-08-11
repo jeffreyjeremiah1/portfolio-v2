@@ -2,139 +2,223 @@
 
 {% block content %}
 
-<div class="container py-5">
+<div class="adnin-edit-page">
+    <div class="admin-edit-card">
 
-    <h2>Edit Project</h2>
+            <div class="mb-4">
+                <h1 class="fw-bold mb-2">Edit Project</h1>
 
-    <form method="POST" enctype="multipart/form-data">
-
-        {{ form.hidden_tag() }}
-
-        <div class="mb-3">
-            {{ form.title.label }}
-            {{ form.title(class="form-control") }}
-        </div>
-
-        <div class="mb-3">
-            {{ form.description.label }}
-            {{ form.description(class="form-control") }}
-        </div>
-
-        <div class="mb-3">
-            {{ form.image.label }}
-            {{ form.image(class="form-control") }}
-        </div>
-
-        <div class="card shadow-sm mt-4">
-
-            <div class="card-header">
-                <h5 class="mb-0">
-                    Project Gallery
-                </h5>
+                <p class="text-muted mb-0">
+                    Update the details, content and media for this project.
+                </p>
             </div>
 
-            <div class="card-body">
 
-                {{ form.gallery.label(class="form-label") }}
+        <form method="POST" enctype="multipart/form-data">
+            
+        <div class="admin-form-section">
+            {{ form.hidden_tag() }}
 
-                {{ form.gallery(
-                    class="form-control",
-                    multiple=True
-                ) }}
-
-                <small class="text-muted">
-                    You can select multiple screenshots.
-                </small>
-
+            <div class="admin-form-section-title">
+                Project Information
             </div>
 
+            <div class="mb-4">
+                {{ form.title.label(class="form-label") }}
+                {{ form.title(class="form-control") }}
+            </div>
+
+            <div class="mb-4">
+                {{ form.description.label(class="form-label") }}
+                {{ form.description(class="form-control") }}
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    {{ form.github.label(class="form-label") }}
+                    {{ form.github(class="form-control") }}
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    {{ form.demo.label(class="form-label") }}
+                    {{ form.demo(class="form-control") }}
+                </div>
+            </div>
+
+            <div class="mb-4">
+                {{ form.technologies.label(class="form-label") }}
+                {{ form.technologies(class="form-control") }}
+            </div>
         </div>
 
-        {% if project.images %}
+            <div class="admin-form-section">
 
-        <hr>
+                <div class="admin-form-section-title">
+                    Project Story
+                </div>
 
-        <h5 class="mb-3">
-            Gallery Images
-        </h5>
+                <div class="mb-4">
 
-        <div class="row">
+                    {{ form.challenge_text.label(class="form-label") }}
 
-        {% for image in project.images %}
+                    {{ form.challenge_text(
+                        class="form-control",
+                        rows="6",
+                        placeholder="What problem was this project solving?"
+                    ) }}
 
-        <div class="col-lg-3 col-md-4 col-6 mb-4">
+                </div>
 
-            <div class="card shadow-sm">
+                <div class="mb-4">
 
-                <img
-                    src="{{ url_for('static', filename=image.image) }}"
-                    class="card-img-top"
-                    style="height:180px; object-fit:cover;">
+                    {{ form.solution_text.label(class="form-label") }}
 
-                <div class="card-body text-center">
+                    {{ form.solution_text(
+                        class="form-control",
+                        rows="6",
+                        placeholder="How did you solve the problem?"
+                    ) }}
 
-                    <a
-                        href="{{ url_for('admin.delete_project_image', id=image.id) }}"
-                        class="btn btn-sm btn-danger"
-                        onclick="return confirm('Delete this image?')">
+                </div>
 
-                        <i class="fa-solid fa-trash"></i>
+                <div class="mb-4">
 
-                    </a>
+                    {{ form.development_process.label(class="form-label") }}
+
+                    {{ form.development_process(
+                        class="form-control",
+                        rows="6",
+                        placeholder="Describe your development or design process..."
+                    ) }}
+
+                </div>
+
+                <div class="mb-4">
+
+                    {{ form.results_text.label(class="form-label") }}
+
+                    {{ form.results_text(
+                        class="form-control",
+                        rows="6",
+                        placeholder="What was the outcome of the project?"
+                    ) }}
+
+                </div>
+
+                <div class="mb-4">
+
+                    {{ form.lessons_text.label(class="form-label") }}
+
+                    {{ form.lessons_text(
+                        class="form-control",
+                        rows="6",
+                        placeholder="What did you learn from this project?"
+                    ) }}
+
+                </div>
+            </div>
+
+            
+            <div class="mb-4">
+                {{ form.image.label }}
+                {{ form.image(class="form-control") }}
+            </div>
+
+            <div class="card shadow-sm mt-4">
+
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        Project Gallery
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    {{ form.gallery.label(class="form-label") }}
+
+                    {{ form.gallery(
+                        class="form-control",
+                        multiple=True
+                    ) }}
+
+                    <small class="text-muted">
+                        You can select multiple screenshots.
+                    </small>
 
                 </div>
 
             </div>
 
-        </div>
+            {% if project.images %}
 
-        {% endfor %}
+            <hr>
 
-        </div>
+            <h5 class="mb-4 text-dark">
+                Gallery Images
+            </h5>
 
-        {% endif %}
+            <div class="row">
 
-        <div class="mb-3">
-            {{ form.github.label }}
-            {{ form.github(class="form-control") }}
-        </div>
+            {% for image in project.images %}
 
-        <div class="mb-3">
-            {{ form.demo.label }}
-            {{ form.demo(class="form-control") }}
-        </div>
+            <div class="col-lg-3 col-md-4 col-6 mb-4">
 
-        <div class="mb-3">
-            {{ form.technologies.label }}
-            {{ form.technologies(class="form-control") }}
-        </div>
+                <div class="card shadow-sm">
 
-        <div class="mb-3">
-            {{ form.featured() }}
-            {{ form.featured.label }}
-        </div>
+                    <img
+                        src="{{ url_for('static', filename=image.image) }}"
+                        class="card-img-top"
+                        style="height:180px; object-fit:cover;">
 
-        <div class="mb-3">
-            {{ form.published() }}
-            {{ form.published.label }}
-        </div>
+                    <div class="card-body text-center">
 
-        <div class="mb-3">
-            {{ form.display_order.label }}
-            {{ form.display_order(class="form-control") }}
-        </div>
+                        <a
+                            href="{{ url_for('admin.delete_project_image', id=image.id) }}"
+                            class="btn btn-sm btn-danger"
+                            onclick="return confirm('Delete this image?')">
 
-        <button class="btn btn-success">
-            Save Changes
-        </button>
+                            <i class="fa-solid fa-trash"></i>
 
-        <a href="{{ url_for('admin.dashboard') }}"
-           class="btn btn-secondary">
-            Cancel
-        </a>
+                        </a>
 
-    </form>
+                    </div>
 
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+            </div>
+
+            {% endif %}
+
+            <div class="mb-3">
+                {{ form.featured() }}
+                {{ form.featured.label (class="form-label")}}
+            </div>
+
+            <div class="mb-3">
+                {{ form.published() }}
+                {{ form.published.label(class="form-label") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.display_order.label(class="form-label") }}
+                {{ form.display_order(class="form-control") }}
+            </div>
+
+            <button class="btn btn-success">
+                Save Changes
+            </button>
+
+            <a href="{{ url_for('admin.dashboard') }}"
+            class="btn btn-secondary">
+                Cancel
+            </a>
+        
+        </form>
+
+    </div>
 </div>
-
 {% endblock %}

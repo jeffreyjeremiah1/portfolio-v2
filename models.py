@@ -58,6 +58,16 @@ class Project(db.Model):
     project_date = db.Column(db.Date)
     duration = db.Column(db.String(50))
 
+    challenge_text = db.Column(db.Text)
+
+    solution_text = db.Column(db.Text)
+
+    development_process = db.Column(db.Text)
+
+    results_text = db.Column(db.Text)
+
+    lessons_text = db.Column(db.Text)
+
     slug = db.Column(
         db.String(200),
         unique=True,

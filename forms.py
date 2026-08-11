@@ -1,16 +1,7 @@
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField
-from wtforms import SubmitField
-from wtforms import TextAreaField
-from wtforms import PasswordField
-from wtforms import IntegerField
-from flask_wtf.file import MultipleFileField
-from wtforms.validators import DataRequired
-from wtforms import BooleanField
-from wtforms import TextAreaField
-from wtforms import EmailField
-from wtforms.validators import Email, Length, EqualTo
+from flask_wtf.file import FileField, FileAllowed, MultipleFileField
+from wtforms import StringField, SubmitField, PasswordField, IntegerField, BooleanField, TextAreaField, EmailField, DateField
+from wtforms.validators import Email, Length, EqualTo, Optional, DataRequired
 
 
 class LoginForm(FlaskForm):
@@ -30,6 +21,14 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Login")
 
 
+print("StringField:", StringField)
+print("TextAreaField:", TextAreaField)
+print("FileField:", FileField)
+print("MultipleFileField:", MultipleFileField)
+print("Optional:", Optional)
+print("DataRequired:", DataRequired)
+
+
 class ProjectForm(FlaskForm):
 
     title = StringField(
@@ -47,6 +46,51 @@ class ProjectForm(FlaskForm):
     demo = StringField("Demo")
 
     technologies = StringField("Technologies")
+
+    client = StringField(
+        "Client",
+        validators=[Optional()]
+    )
+
+    role = StringField(
+        "Role",
+        validators=[Optional()]
+    )
+
+    project_date = DateField(
+        "Project Date",
+        validators=[Optional()]
+    )
+
+    duration = StringField(
+        "Duration",
+        validators=[Optional()]
+    )
+
+    challenge_text = TextAreaField(
+        "The Challenge",
+        validators=[Optional()]
+    )
+
+    solution_text = TextAreaField(
+        "The Solution",
+        validators=[Optional()]
+    )
+
+    development_process = TextAreaField(
+        "Development Process",
+        validators=[Optional()]
+    )
+
+    results_text = TextAreaField(
+        "Results / Outcome",
+        validators=[Optional()]
+    )
+
+    lessons_text = TextAreaField(
+        "Lessons Learned",
+        validators=[Optional()]
+    )
 
     submit = SubmitField("Save Project")
 

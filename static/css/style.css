@@ -363,3 +363,128 @@ section {
     opacity:.7;
 }
 
+.form-label {
+    color: #000 !important;
+}
+
+/* =========================================================
+   ADMIN - EDIT PROJECT
+   ========================================================= */
+
+.admin-edit-page {
+    background: #f1f3f5;
+    min-height: 100vh;
+    padding: 40px;
+    color: #212529;
+}
+
+/* Main form card */
+.admin-edit-card {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    padding: 35px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* Page heading */
+.admin-edit-card h1,
+.admin-edit-card h2,
+.admin-edit-card h3 {
+    color: #212529;
+}
+
+/* Form labels */
+.admin-edit-card .form-label {
+    display: block;
+    color: #212529 !important;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 8px;
+}
+
+/* Input fields */
+.admin-edit-card .form-control,
+.admin-edit-card .form-select {
+    background-color: #ffffff;
+    color: #212529;
+    border: 1px solid #ced4da;
+    border-radius: 7px;
+    padding: 11px 13px;
+    font-size: 15px;
+}
+
+/* Textarea */
+.admin-edit-card textarea.form-control {
+    min-height: 140px;
+    resize: vertical;
+}
+
+/* Placeholder */
+.admin-edit-card .form-control::placeholder {
+    color: #6c757d;
+    opacity: 1;
+}
+
+/* Focus state */
+.admin-edit-card .form-control:focus,
+.admin-edit-card .form-select:focus {
+    background-color: #ffffff;
+    color: #212529;
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.12);
+}
+
+/* Each form section */
+.admin-form-section {
+    margin-bottom: 30px;
+}
+
+/* Section headings */
+.admin-form-section-title {
+    color: #212529;
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Small help text */
+.admin-edit-card .form-text {
+    color: #6c757d;
+}
+
+/* File inputs */
+.admin-edit-card input[type="file"] {
+    background: #ffffff;
+    color: #212529;
+}
+
+/* Checkboxes */
+.admin-edit-card .form-check-label {
+    color: #212529 !important;
+    font-weight: 500;
+}
+
+/* Buttons */
+.admin-edit-card .btn {
+    border-radius: 7px;
+    font-weight: 600;
+    padding: 10px 20px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    .admin-edit-page {
+        padding: 20px;
+    }
+
+    .admin-edit-card {
+        padding: 22px;
+    }
+
+}

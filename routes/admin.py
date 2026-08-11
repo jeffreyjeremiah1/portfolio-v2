@@ -137,17 +137,29 @@ def edit_project(id):
 
     form = ProjectForm()
 
-
     if request.method == "GET":
+
         form.title.data = project.title
         form.description.data = project.description
         form.github.data = project.github
         form.demo.data = project.demo
         form.technologies.data = project.technologies
 
+        form.client.data = project.client
+        form.role.data = project.role
+        form.project_date.data = project.project_date
+        form.duration.data = project.duration   
+
+        form.challenge_text.data = project.challenge_text
+        form.solution_text.data = project.solution_text
+        form.development_process.data = project.development_process
+        form.results_text.data = project.results_text
+        form.lessons_text.data = project.lessons_text
+
         form.featured.data = project.featured
         form.published.data = project.published
         form.display_order.data = project.display_order
+
 
     if form.validate_on_submit():
 
@@ -160,6 +172,12 @@ def edit_project(id):
         project.featured = form.featured.data
         project.published = form.published.data
         project.display_order = form.display_order.data
+
+        project.challenge = form.challenge_text.data
+        project.solution = form.solution_text.data
+        project.development_process = form.development_process.data
+        project.results = form.results_text.data
+        project.lessons = form.lessons_text.data
 
         # Generate a slug from the title
         project.slug = slugify(form.title.data)
