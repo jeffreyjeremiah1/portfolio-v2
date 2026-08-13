@@ -172,14 +172,17 @@
 
                     <div class="card-body text-center">
 
-                        <a
-                            href="{{ url_for('admin.delete_project_image', id=image.id) }}"
-                            class="btn btn-sm btn-danger"
-                            onclick="return confirm('Delete this image?')">
+                        <form action="{{ url_for('admin.delete_project_image', id=image.id) }}"
+                            method="POST"
+                            onsubmit="return confirm('Delete this image?')">
 
-                            <i class="fa-solid fa-trash"></i>
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-                        </a>
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+
+                        </form>
 
                     </div>
 

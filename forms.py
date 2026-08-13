@@ -21,14 +21,6 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Login")
 
 
-print("StringField:", StringField)
-print("TextAreaField:", TextAreaField)
-print("FileField:", FileField)
-print("MultipleFileField:", MultipleFileField)
-print("Optional:", Optional)
-print("DataRequired:", DataRequired)
-
-
 class ProjectForm(FlaskForm):
 
     title = StringField(

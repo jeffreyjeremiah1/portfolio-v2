@@ -1,6 +1,9 @@
+import os
+
 from flask import Flask, render_template, redirect, url_for, flash
 from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
+from flask_wtf import CSRFProtect
 
 from config import Config
 from models import db, User, Message, Settings
@@ -40,6 +43,11 @@ login_manager.login_view = "auth.login"
 login_manager.login_message = "Please log in to continue."
 
 login_manager.login_message_category = "warning"
+
+
+# Initialize CSRF protection for all state-changing routes
+
+csrf = CSRFProtect(app)
 
 
 # Initialize database
@@ -85,4 +93,5 @@ def internal_server_error(error):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8000)
+    debug = os.getenv("FLASK_DEBUG", "0") == "1"
+    app.run(debug=debug, port=8000)

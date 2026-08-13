@@ -51,13 +51,17 @@
                         {% endif %}
                     </div>
 
-                    <a href="{{ project.github }}" class="btn btn-outline-light btn-sm">
+                    {% if project.github %}
+                    <a href="{{ project.github }}" class="btn btn-outline-light btn-sm" target="_blank" rel="noopener noreferrer">
                         GitHub
                     </a>
+                    {% endif %}
 
-                    <a href="{{ project.demo }}" class="btn btn-primary btn-sm">
+                    {% if project.demo %}
+                    <a href="{{ project.demo }}" class="btn btn-primary btn-sm" target="_blank" rel="noopener noreferrer">
                         Live Demo
                     </a>
+                    {% endif %}
 
                 </div>
 

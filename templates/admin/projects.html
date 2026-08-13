@@ -164,12 +164,18 @@
 
                         </a>
 
-                        <a href="{{ url_for('admin.delete_project', id=project.id) }}"
-                        class="btn btn-sm btn-outline-danger">
+                        <form action="{{ url_for('admin.delete_project', id=project.id) }}"
+                            method="POST"
+                            class="d-inline"
+                            onsubmit="return confirm('Delete this project?')">
 
-                            <i class="fa-solid fa-trash"></i>
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-                        </a>
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+
+                        </form>
 
                     </td>
 

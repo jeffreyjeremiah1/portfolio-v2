@@ -176,17 +176,62 @@ Technologies Used
 
 </h3>
 
-{% for tech in project.technologies.split(",") %}
+{% if project.technologies %}
+    {% for tech in project.technologies.split(",") %}
 
-<span class="tech-badge">
+    <span class="tech-badge">
 
-{{ tech.strip() }}
+    {{ tech.strip() }}
 
-</span>
+    </span>
 
-{% endfor %}
+    {% endfor %}
+{% endif %}
 
 </div>
+
+{% if project.challenge_text or project.solution_text or project.development_process or project.results_text or project.lessons_text %}
+
+<div class="container mb-5">
+
+    {% if project.challenge_text %}
+    <div class="mb-4">
+        <h3 class="fw-bold mb-3">The Challenge</h3>
+        <p style="white-space: pre-wrap;">{{ project.challenge_text }}</p>
+    </div>
+    {% endif %}
+
+    {% if project.solution_text %}
+    <div class="mb-4">
+        <h3 class="fw-bold mb-3">The Solution</h3>
+        <p style="white-space: pre-wrap;">{{ project.solution_text }}</p>
+    </div>
+    {% endif %}
+
+    {% if project.development_process %}
+    <div class="mb-4">
+        <h3 class="fw-bold mb-3">Development Process</h3>
+        <p style="white-space: pre-wrap;">{{ project.development_process }}</p>
+    </div>
+    {% endif %}
+
+    {% if project.results_text %}
+    <div class="mb-4">
+        <h3 class="fw-bold mb-3">Results / Outcome</h3>
+        <p style="white-space: pre-wrap;">{{ project.results_text }}</p>
+    </div>
+    {% endif %}
+
+    {% if project.lessons_text %}
+    <div class="mb-4">
+        <h3 class="fw-bold mb-3">Lessons Learned</h3>
+        <p style="white-space: pre-wrap;">{{ project.lessons_text }}</p>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endif %}
 
 <div class="container py-5">
 

@@ -1,13 +1,9 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
-from flask_wtf import form
 from models import db, Project, ProjectImage, Message, User, Settings
 from forms import ProjectForm, EditProfileForm, ChangePasswordForm, SettingsForm
-import os
 from slugify import slugify
-from werkzeug.utils import secure_filename
-from flask import current_app
 from flask_login import login_required, current_user
-from utils import delete_image, save_image, delete_image
+from utils import delete_image, save_image
 from werkzeug.datastructures import FileStorage
 
 
@@ -89,28 +85,28 @@ def add_project():
     form = ProjectForm()
 
     if form.validate_on_submit():
-        filename = None
 
-        if form.image.data:
+        image_path = None
 
-            image = form.image.data
-
-            filename = secure_filename(image.filename)
-
-            image.save(
-                os.path.join(
-                current_app.config["UPLOAD_FOLDER"],
-                filename
+        if isinstance(form.image.data, FileStorage) and form.image.data.filename:
+            image_path = save_image(
+                form.image.data,
+                "uploads/projects",
+                (1200, 800)
             )
-    )
 
         project = Project(
             title=form.title.data,
             description=form.description.data,
-            image=f"uploads/{filename}" if filename else None,
+            image=image_path,
             github=form.github.data,
             demo=form.demo.data,
             technologies=form.technologies.data,
+            challenge_text=form.challenge_text.data,
+            solution_text=form.solution_text.data,
+            development_process=form.development_process.data,
+            results_text=form.results_text.data,
+            lessons_text=form.lessons_text.data,
         )
 
         # Generate a slug from the title
@@ -169,15 +165,20 @@ def edit_project(id):
         project.demo = form.demo.data
         project.technologies = form.technologies.data
 
+        project.client = form.client.data
+        project.role = form.role.data
+        project.project_date = form.project_date.data
+        project.duration = form.duration.data
+
         project.featured = form.featured.data
         project.published = form.published.data
         project.display_order = form.display_order.data
 
-        project.challenge = form.challenge_text.data
-        project.solution = form.solution_text.data
+        project.challenge_text = form.challenge_text.data
+        project.solution_text = form.solution_text.data
         project.development_process = form.development_process.data
-        project.results = form.results_text.data
-        project.lessons = form.lessons_text.data
+        project.results_text = form.results_text.data
+        project.lessons_text = form.lessons_text.data
 
         # Generate a slug from the title
         project.slug = slugify(form.title.data)
@@ -229,7 +230,7 @@ def edit_project(id):
     )
 
 
-@admin.route("/gallery/delete/<int:id>")
+@admin.route("/gallery/delete/<int:id>", methods=["POST"])
 @login_required
 def delete_project_image(id):
 
@@ -513,11 +514,6 @@ def settings():
         if isinstance(form.logo.data, FileStorage) and form.logo.data.filename:
 
             delete_image(settings.logo)
-
-            print("=" * 50)
-            print("Logo data:", form.logo.data)
-            print("Logo type:", type(form.logo.data))
-            print("=" * 50)
 
             settings.logo = save_image(
                 form.logo.data,
