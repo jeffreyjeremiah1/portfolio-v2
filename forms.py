@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, MultipleFileField
-from wtforms import StringField, SubmitField, PasswordField, IntegerField, BooleanField, TextAreaField, EmailField, DateField
+from wtforms import StringField, SubmitField, PasswordField, IntegerField, BooleanField, TextAreaField, EmailField, DateField, SelectMultipleField
 from wtforms.validators import Email, Length, EqualTo, Optional, DataRequired
+from wtforms.widgets import ListWidget, CheckboxInput
 
 
 class LoginForm(FlaskForm):
@@ -115,7 +116,25 @@ class ProjectForm(FlaskForm):
         default=0
     )
 
-    
+    tags = SelectMultipleField(
+        "Tags",
+        coerce=int,
+        validators=[Optional()],
+        widget=ListWidget(prefix_label=False),
+        option_widget=CheckboxInput()
+    )
+
+
+class TagForm(FlaskForm):
+
+    name = StringField(
+        "Tag Name",
+        validators=[DataRequired(), Length(max=50)]
+    )
+
+    submit = SubmitField("Save Tag")
+
+
 class ContactForm(FlaskForm):
 
     name = StringField(
@@ -146,6 +165,15 @@ class ContactForm(FlaskForm):
         validators=[
             DataRequired()
         ]
+    )
+
+    # Honeypot spam trap: real visitors never see or fill this field
+    # (hidden off-screen via CSS in components/contact.html). Bots that
+    # blindly fill every input tend to fill it, so a non-empty value
+    # means "reject silently" in the route handler.
+    website = StringField(
+        "Website",
+        validators=[Optional()]
     )
 
     submit = SubmitField(
@@ -273,7 +301,92 @@ class SettingsForm(FlaskForm):
         ]
     )
 
+    resume = FileField(
+        "Resume (PDF)",
+        validators=[
+            FileAllowed(
+                ["pdf"],
+                "PDF only."
+            )
+        ]
+    )
+
     # Footer
     copyright_text = StringField("Copyright")
 
     submit = SubmitField("Save Settings")
+
+
+class TestimonialForm(FlaskForm):
+
+    name = StringField(
+        "Name",
+        validators=[DataRequired(), Length(max=100)]
+    )
+
+    role_company = StringField(
+        "Role / Company",
+        validators=[Optional(), Length(max=150)]
+    )
+
+    quote = TextAreaField(
+        "Quote",
+        validators=[DataRequired()]
+    )
+
+    avatar = FileField(
+        "Avatar",
+        validators=[
+            FileAllowed(
+                ["jpg", "jpeg", "png", "webp"],
+                "Images only."
+            )
+        ]
+    )
+
+    published = BooleanField(
+        "Published",
+        default=True
+    )
+
+    display_order = IntegerField(
+        "Display Order",
+        default=0
+    )
+
+    submit = SubmitField("Save Testimonial")
+
+
+class PostForm(FlaskForm):
+
+    title = StringField(
+        "Title",
+        validators=[DataRequired(), Length(max=150)]
+    )
+
+    excerpt = StringField(
+        "Excerpt",
+        validators=[Optional(), Length(max=300)]
+    )
+
+    content = TextAreaField(
+        "Content",
+        validators=[DataRequired()]
+    )
+
+    cover_image = FileField(
+        "Cover Image",
+        validators=[
+            FileAllowed(
+                ["jpg", "jpeg", "png", "webp"],
+                "Images only."
+            )
+        ]
+    )
+
+    published = BooleanField(
+        "Published",
+        default=True
+    )
+
+    submit = SubmitField("Save Post")

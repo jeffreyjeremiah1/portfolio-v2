@@ -11,3 +11,7 @@ uploads/
 portfolio.db
 
 *.sqlite3
+
+backups/
+
+.claude/

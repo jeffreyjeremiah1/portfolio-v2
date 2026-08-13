@@ -12,6 +12,13 @@ body{
     --gray: #94A3B8;
 }
 
+html[data-theme="light"] {
+    --bg-color: #F8FAFC;
+    --card-color: #FFFFFF;
+    --text: #0F172A;
+    --gray: #475569;
+}
+
 * {
     margin: 0;
     padding: 0;

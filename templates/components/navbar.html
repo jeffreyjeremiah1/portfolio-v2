@@ -6,7 +6,7 @@
         href="{{ url_for('public.home') }}">
 
             {% if settings and settings.logo %}
-                <img src="{{ url_for('static', filename=settings.logo) }}"
+                <img src="{{ upload_url(settings.logo) }}"
                     alt="{{ settings.site_name }}"
                     height="40"
                     class="me-2">
@@ -45,8 +45,14 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('public.home') }}#projects">
+                    <a class="nav-link" href="{{ url_for('public.projects_list') }}">
                         Projects
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('public.blog_list') }}">
+                        Blog
                     </a>
                 </li>
 
@@ -54,6 +60,26 @@
                     <a class="nav-link" href="{{ url_for('public.home') }}#contact">
                         Contact
                     </a>
+                </li>
+
+                {% if settings and settings.resume_file %}
+                <li class="nav-item ms-lg-3">
+                    <a class="btn btn-outline-light"
+                       href="{{ upload_url(settings.resume_file) }}"
+                       download>
+                        <i class="fa-solid fa-download me-1"></i>
+                        Resume
+                    </a>
+                </li>
+                {% endif %}
+
+                <li class="nav-item ms-lg-3">
+                    <button id="theme-toggle"
+                            type="button"
+                            class="btn btn-outline-light"
+                            aria-label="Toggle dark and light mode">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
                 </li>
 
                 {% if current_user.is_authenticated %}

@@ -1,0 +1,54 @@
+{% extends "admin/admin_base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <h2 class="mb-3 text-body">Edit Post</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3 text-body">
+            {{ form.title.label(class="form-label") }}
+            {{ form.title(class="form-control") }}
+        </div>
+
+        <div class="mb-3 text-body">
+            {{ form.excerpt.label(class="form-label") }}
+            {{ form.excerpt(class="form-control") }}
+        </div>
+
+        <div class="mb-4">
+            {{ form.content.label(class="form-label") }}
+            {{ form.content(class="form-control", rows="10", **{"data-richtext": "true"}) }}
+        </div>
+
+        {% if post.cover_image %}
+            <div class="mb-3">
+                <img src="{{ upload_url(post.cover_image) }}"
+                     class="img-fluid rounded"
+                     style="max-width:300px;">
+            </div>
+        {% endif %}
+
+        <div class="mb-3 text-body">
+            {{ form.cover_image.label(class="form-label") }}
+            {{ form.cover_image(class="form-control") }}
+        </div>
+
+        <div class="form-check mb-4">
+            {{ form.published(class="form-check-input") }}
+            {{ form.published.label(class="form-check-label") }}
+        </div>
+
+        <button type="submit" class="btn btn-success">Save Changes</button>
+
+        <a href="{{ url_for('admin.posts') }}" class="btn btn-secondary">Cancel</a>
+
+    </form>
+
+</div>
+
+{% endblock %}

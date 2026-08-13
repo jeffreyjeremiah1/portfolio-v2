@@ -1,0 +1,49 @@
+{% extends "admin/admin_base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <h2 class="mb-3 text-body">Add Testimonial</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3 text-body">
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control") }}
+        </div>
+
+        <div class="mb-3 text-body">
+            {{ form.role_company.label(class="form-label") }}
+            {{ form.role_company(class="form-control") }}
+        </div>
+
+        <div class="mb-3 text-body">
+            {{ form.quote.label(class="form-label") }}
+            {{ form.quote(class="form-control", rows="4") }}
+        </div>
+
+        <div class="mb-3 text-body">
+            {{ form.avatar.label(class="form-label") }}
+            {{ form.avatar(class="form-control") }}
+        </div>
+
+        <div class="mb-3 text-body">
+            {{ form.display_order.label(class="form-label") }}
+            {{ form.display_order(class="form-control") }}
+        </div>
+
+        <div class="form-check mb-4">
+            {{ form.published(class="form-check-input") }}
+            {{ form.published.label(class="form-check-label") }}
+        </div>
+
+        {{ form.submit(class="btn btn-primary") }}
+
+    </form>
+
+</div>
+
+{% endblock %}

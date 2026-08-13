@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
-from models import db, Project, ProjectImage, Message, User, Settings
-from forms import ProjectForm, EditProfileForm, ChangePasswordForm, SettingsForm
+from models import db, Project, ProjectImage, Message, User, Settings, Tag, Testimonial, Post
+from forms import ProjectForm, EditProfileForm, ChangePasswordForm, SettingsForm, TagForm, TestimonialForm, PostForm
 from slugify import slugify
 from flask_login import login_required, current_user
-from utils import delete_image, save_image
+from utils import delete_image, save_image, save_file
 from werkzeug.datastructures import FileStorage
 
 
@@ -22,6 +22,14 @@ def dashboard():
         is_read=False
     ).count()
 
+    total_posts = Post.query.count()
+
+    total_testimonials = Testimonial.query.count()
+
+    total_views = db.session.query(
+        db.func.sum(Project.view_count)
+    ).scalar() or 0
+
     recent_projects = (
         Project.query
         .order_by(Project.id.desc())
@@ -36,13 +44,24 @@ def dashboard():
         .all()
     )
 
+    most_viewed_projects = (
+        Project.query
+        .order_by(Project.view_count.desc())
+        .limit(5)
+        .all()
+    )
+
     return render_template(
         "admin/dashboard.html",
         total_projects=total_projects,
         total_messages=total_messages,
         unread_messages=unread_messages,
+        total_posts=total_posts,
+        total_testimonials=total_testimonials,
+        total_views=total_views,
         recent_projects=recent_projects,
-        recent_messages=recent_messages
+        recent_messages=recent_messages,
+        most_viewed_projects=most_viewed_projects
     )
 
 
@@ -84,6 +103,10 @@ def add_project():
 
     form = ProjectForm()
 
+    form.tags.choices = [
+        (tag.id, tag.name) for tag in Tag.query.order_by(Tag.name).all()
+    ]
+
     if form.validate_on_submit():
 
         image_path = None
@@ -109,6 +132,10 @@ def add_project():
             lessons_text=form.lessons_text.data,
         )
 
+        project.tags = Tag.query.filter(
+            Tag.id.in_(form.tags.data)
+        ).all()
+
         # Generate a slug from the title
         project.slug = slugify(form.title.data)
 
@@ -133,6 +160,10 @@ def edit_project(id):
 
     form = ProjectForm()
 
+    form.tags.choices = [
+        (tag.id, tag.name) for tag in Tag.query.order_by(Tag.name).all()
+    ]
+
     if request.method == "GET":
 
         form.title.data = project.title
@@ -144,7 +175,7 @@ def edit_project(id):
         form.client.data = project.client
         form.role.data = project.role
         form.project_date.data = project.project_date
-        form.duration.data = project.duration   
+        form.duration.data = project.duration
 
         form.challenge_text.data = project.challenge_text
         form.solution_text.data = project.solution_text
@@ -155,6 +186,8 @@ def edit_project(id):
         form.featured.data = project.featured
         form.published.data = project.published
         form.display_order.data = project.display_order
+
+        form.tags.data = [tag.id for tag in project.tags]
 
 
     if form.validate_on_submit():
@@ -179,6 +212,10 @@ def edit_project(id):
         project.development_process = form.development_process.data
         project.results_text = form.results_text.data
         project.lessons_text = form.lessons_text.data
+
+        project.tags = Tag.query.filter(
+            Tag.id.in_(form.tags.data)
+        ).all()
 
         # Generate a slug from the title
         project.slug = slugify(form.title.data)
@@ -531,6 +568,15 @@ def settings():
                 (64, 64)
             )
 
+        if isinstance(form.resume.data, FileStorage) and form.resume.data.filename:
+
+            delete_image(settings.resume_file)
+
+            settings.resume_file = save_file(
+                form.resume.data,
+                "uploads/site/resumes"
+            )
+
         db.session.commit()
 
         flash(
@@ -545,3 +591,304 @@ def settings():
         form=form,
         settings=settings
     )
+
+
+@admin.route("/admin/tags")
+@login_required
+def tags():
+
+    tags = Tag.query.order_by(Tag.name).all()
+
+    return render_template(
+        "admin/tags.html",
+        tags=tags,
+        form=TagForm()
+    )
+
+
+@admin.route("/admin/tags/add", methods=["POST"])
+@login_required
+def add_tag():
+
+    form = TagForm()
+
+    if form.validate_on_submit():
+
+        tag = Tag(
+            name=form.name.data,
+            slug=slugify(form.name.data)
+        )
+
+        db.session.add(tag)
+        db.session.commit()
+
+        flash("Tag added successfully!", "success")
+
+    return redirect(url_for("admin.tags"))
+
+
+@admin.route("/admin/tags/delete/<int:id>", methods=["POST"])
+@login_required
+def delete_tag(id):
+
+    tag = db.get_or_404(Tag, id)
+
+    db.session.delete(tag)
+    db.session.commit()
+
+    flash("Tag deleted successfully.", "success")
+
+    return redirect(url_for("admin.tags"))
+
+
+@admin.route("/admin/testimonials")
+@login_required
+def testimonials():
+
+    testimonials = (
+        Testimonial.query
+        .order_by(Testimonial.display_order.asc())
+        .all()
+    )
+
+    return render_template(
+        "admin/testimonials.html",
+        testimonials=testimonials
+    )
+
+
+@admin.route("/admin/testimonials/add", methods=["GET", "POST"])
+@login_required
+def add_testimonial():
+
+    form = TestimonialForm()
+
+    if form.validate_on_submit():
+
+        avatar_path = None
+
+        if isinstance(form.avatar.data, FileStorage) and form.avatar.data.filename:
+            avatar_path = save_image(
+                form.avatar.data,
+                "uploads/testimonials",
+                (200, 200)
+            )
+
+        testimonial = Testimonial(
+            name=form.name.data,
+            role_company=form.role_company.data,
+            quote=form.quote.data,
+            avatar=avatar_path,
+            published=form.published.data,
+            display_order=form.display_order.data,
+        )
+
+        db.session.add(testimonial)
+        db.session.commit()
+
+        flash("Testimonial added successfully!", "success")
+
+        return redirect(url_for("admin.testimonials"))
+
+    return render_template(
+        "admin/add_testimonial.html",
+        form=form
+    )
+
+
+@admin.route("/admin/testimonials/edit/<int:id>", methods=["GET", "POST"])
+@login_required
+def edit_testimonial(id):
+
+    testimonial = db.get_or_404(Testimonial, id)
+
+    form = TestimonialForm()
+
+    if request.method == "GET":
+
+        form.name.data = testimonial.name
+        form.role_company.data = testimonial.role_company
+        form.quote.data = testimonial.quote
+        form.published.data = testimonial.published
+        form.display_order.data = testimonial.display_order
+
+    if form.validate_on_submit():
+
+        testimonial.name = form.name.data
+        testimonial.role_company = form.role_company.data
+        testimonial.quote = form.quote.data
+        testimonial.published = form.published.data
+        testimonial.display_order = form.display_order.data
+
+        if isinstance(form.avatar.data, FileStorage) and form.avatar.data.filename:
+
+            delete_image(testimonial.avatar)
+
+            testimonial.avatar = save_image(
+                form.avatar.data,
+                "uploads/testimonials",
+                (200, 200)
+            )
+
+        db.session.commit()
+
+        flash("Testimonial updated successfully!", "success")
+
+        return redirect(url_for("admin.testimonials"))
+
+    return render_template(
+        "admin/edit_testimonial.html",
+        form=form,
+        testimonial=testimonial
+    )
+
+
+@admin.route("/admin/testimonials/delete/<int:id>", methods=["POST"])
+@login_required
+def delete_testimonial(id):
+
+    testimonial = db.get_or_404(Testimonial, id)
+
+    delete_image(testimonial.avatar)
+
+    db.session.delete(testimonial)
+    db.session.commit()
+
+    flash("Testimonial deleted successfully!", "success")
+
+    return redirect(url_for("admin.testimonials"))
+
+
+@admin.route("/admin/posts")
+@login_required
+def posts():
+
+    search = request.args.get("search", "").strip()
+
+    page = request.args.get("page", 1, type=int)
+
+    query = Post.query
+
+    if search:
+        query = query.filter(
+            Post.title.ilike(f"%{search}%")
+        )
+
+    posts = (
+        query
+        .order_by(Post.created_at.desc())
+        .paginate(
+            page=page,
+            per_page=5,
+            error_out=False
+        )
+    )
+
+    return render_template(
+        "admin/posts.html",
+        posts=posts,
+        search=search
+    )
+
+
+@admin.route("/admin/posts/add", methods=["GET", "POST"])
+@login_required
+def add_post():
+
+    form = PostForm()
+
+    if form.validate_on_submit():
+
+        cover_path = None
+
+        if isinstance(form.cover_image.data, FileStorage) and form.cover_image.data.filename:
+            cover_path = save_image(
+                form.cover_image.data,
+                "uploads/posts",
+                (1200, 630)
+            )
+
+        post = Post(
+            title=form.title.data,
+            excerpt=form.excerpt.data,
+            content=form.content.data,
+            cover_image=cover_path,
+            published=form.published.data,
+        )
+
+        post.slug = slugify(form.title.data)
+
+        db.session.add(post)
+        db.session.commit()
+
+        flash("Post added successfully!", "success")
+
+        return redirect(url_for("admin.posts"))
+
+    return render_template(
+        "admin/add_post.html",
+        form=form
+    )
+
+
+@admin.route("/admin/posts/edit/<int:id>", methods=["GET", "POST"])
+@login_required
+def edit_post(id):
+
+    post = db.get_or_404(Post, id)
+
+    form = PostForm()
+
+    if request.method == "GET":
+
+        form.title.data = post.title
+        form.excerpt.data = post.excerpt
+        form.content.data = post.content
+        form.published.data = post.published
+
+    if form.validate_on_submit():
+
+        post.title = form.title.data
+        post.excerpt = form.excerpt.data
+        post.content = form.content.data
+        post.published = form.published.data
+
+        post.slug = slugify(form.title.data)
+
+        if isinstance(form.cover_image.data, FileStorage) and form.cover_image.data.filename:
+
+            delete_image(post.cover_image)
+
+            post.cover_image = save_image(
+                form.cover_image.data,
+                "uploads/posts",
+                (1200, 630)
+            )
+
+        db.session.commit()
+
+        flash("Post updated successfully!", "success")
+
+        return redirect(url_for("admin.posts"))
+
+    return render_template(
+        "admin/edit_post.html",
+        form=form,
+        post=post
+    )
+
+
+@admin.route("/admin/posts/delete/<int:id>", methods=["POST"])
+@login_required
+def delete_post(id):
+
+    post = db.get_or_404(Post, id)
+
+    delete_image(post.cover_image)
+
+    db.session.delete(post)
+    db.session.commit()
+
+    flash("Post deleted successfully!", "success")
+
+    return redirect(url_for("admin.posts"))

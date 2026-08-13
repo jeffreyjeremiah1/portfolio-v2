@@ -30,7 +30,7 @@
 
             <div class="mb-4">
                 {{ form.description.label(class="form-label") }}
-                {{ form.description(class="form-control") }}
+                {{ form.description(class="form-control", **{"data-richtext": "true"}) }}
             </div>
 
             <div class="row">
@@ -49,6 +49,11 @@
                 {{ form.technologies.label(class="form-label") }}
                 {{ form.technologies(class="form-control") }}
             </div>
+
+            <div class="mb-4">
+                {{ form.tags.label(class="form-label d-block") }}
+                {{ form.tags(class="list-unstyled") }}
+            </div>
         </div>
 
             <div class="admin-form-section">
@@ -64,7 +69,8 @@
                     {{ form.challenge_text(
                         class="form-control",
                         rows="6",
-                        placeholder="What problem was this project solving?"
+                        placeholder="What problem was this project solving?",
+                        **{"data-richtext": "true"}
                     ) }}
 
                 </div>
@@ -76,7 +82,8 @@
                     {{ form.solution_text(
                         class="form-control",
                         rows="6",
-                        placeholder="How did you solve the problem?"
+                        placeholder="How did you solve the problem?",
+                        **{"data-richtext": "true"}
                     ) }}
 
                 </div>
@@ -88,7 +95,8 @@
                     {{ form.development_process(
                         class="form-control",
                         rows="6",
-                        placeholder="Describe your development or design process..."
+                        placeholder="Describe your development or design process...",
+                        **{"data-richtext": "true"}
                     ) }}
 
                 </div>
@@ -100,7 +108,8 @@
                     {{ form.results_text(
                         class="form-control",
                         rows="6",
-                        placeholder="What was the outcome of the project?"
+                        placeholder="What was the outcome of the project?",
+                        **{"data-richtext": "true"}
                     ) }}
 
                 </div>
@@ -112,7 +121,8 @@
                     {{ form.lessons_text(
                         class="form-control",
                         rows="6",
-                        placeholder="What did you learn from this project?"
+                        placeholder="What did you learn from this project?",
+                        **{"data-richtext": "true"}
                     ) }}
 
                 </div>
@@ -166,7 +176,7 @@
                 <div class="card shadow-sm">
 
                     <img
-                        src="{{ url_for('static', filename=image.image) }}"
+                        src="{{ upload_url(image.image) }}"
                         class="card-img-top"
                         style="height:180px; object-fit:cover;">
 

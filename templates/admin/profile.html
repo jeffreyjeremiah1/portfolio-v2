@@ -19,7 +19,7 @@
 <div class="col-md-4 text-center">
 
 <img
-    src="{{ url_for('static', filename=current_user.profile_image) }}"
+    src="{{ upload_url(current_user.profile_image) }}"
     class="rounded-circle shadow"
     style="width:180px;height:180px;object-fit:cover;">
 

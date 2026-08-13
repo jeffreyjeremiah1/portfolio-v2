@@ -82,6 +82,48 @@
                 </a>
 
                 <a class="nav-link mb-2
+                    {% if request.endpoint == 'admin.tags' %}
+                        active fw-bold bg-primary rounded text-white
+                    {% else %}
+                        text-white
+                    {% endif %}"
+                    href="{{ url_for('admin.tags') }}">
+
+                    <i class="fa-solid fa-tags me-2"></i>
+
+                    Tags
+
+                </a>
+
+                <a class="nav-link mb-2
+                    {% if request.endpoint == 'admin.testimonials' %}
+                        active fw-bold bg-primary rounded text-white
+                    {% else %}
+                        text-white
+                    {% endif %}"
+                    href="{{ url_for('admin.testimonials') }}">
+
+                    <i class="fa-solid fa-quote-left me-2"></i>
+
+                    Testimonials
+
+                </a>
+
+                <a class="nav-link mb-2
+                    {% if request.endpoint == 'admin.posts' %}
+                        active fw-bold bg-primary rounded text-white
+                    {% else %}
+                        text-white
+                    {% endif %}"
+                    href="{{ url_for('admin.posts') }}">
+
+                    <i class="fa-solid fa-blog me-2"></i>
+
+                    Blog Posts
+
+                </a>
+
+                <a class="nav-link mb-2
                     {% if request.endpoint == 'admin.messages' %}
                         active fw-bold bg-primary rounded text-white
                     {% else %}

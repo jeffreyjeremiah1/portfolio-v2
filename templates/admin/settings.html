@@ -471,7 +471,7 @@
                         <h5>Current Logo</h5>
 
                         <img
-                            src="{{ url_for('static', filename=settings.logo) }}"
+                            src="{{ upload_url(settings.logo) }}"
                             class="img-fluid mb-3"
                             style="max-height:100px;">
 
@@ -518,7 +518,7 @@
                         <h5>Current Favicon</h5>
 
                         <img
-                            src="{{ url_for('static', filename=settings.favicon) }}"
+                            src="{{ upload_url(settings.favicon) }}"
                             width="48"
                             class="mb-3">
 
@@ -548,6 +548,55 @@
                         <div class="form-text">
                             Recommended size: 64 × 64 pixels.
                             ICO or PNG.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="card shadow-sm mb-4">
+
+                    <div class="card-body">
+
+                        <h5>Resume / CV</h5>
+
+                        {% if settings.resume_file %}
+                            <p class="text-success small mb-3">
+                                <i class="fa-solid fa-circle-check me-1"></i>
+                                <a href="{{ upload_url(settings.resume_file) }}" target="_blank">
+                                    Current resume uploaded
+                                </a>
+                            </p>
+                        {% else %}
+                            <p class="text-muted small mb-3">
+                                No resume uploaded yet.
+                            </p>
+                        {% endif %}
+
+                        {{ form.resume.label(class="form-label") }}
+
+                        {% if form.resume.errors %}
+
+                            {{ form.resume(class="form-control is-invalid") }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.resume.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+
+                            {{ form.resume(class="form-control") }}
+
+                        {% endif %}
+
+                        <div class="form-text">
+                            PDF only.
                         </div>
 
                     </div>

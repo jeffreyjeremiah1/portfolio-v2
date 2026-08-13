@@ -7,6 +7,34 @@ from datetime import datetime
 db = SQLAlchemy()
 
 
+project_tags = db.Table(
+    "project_tags",
+    db.Column("project_id", db.Integer, db.ForeignKey("projects.id"), primary_key=True),
+    db.Column("tag_id", db.Integer, db.ForeignKey("tags.id"), primary_key=True),
+)
+
+
+class Tag(db.Model):
+    __tablename__ = "tags"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    name = db.Column(
+        db.String(50),
+        unique=True,
+        nullable=False
+    )
+
+    slug = db.Column(
+        db.String(50),
+        unique=True,
+        nullable=False
+    )
+
+    def __repr__(self):
+        return f"<Tag {self.name}>"
+
+
 class Project(db.Model):
     __tablename__ = "projects"
 
@@ -51,6 +79,17 @@ class Project(db.Model):
         lazy=True,
         cascade="all, delete-orphan",
         order_by="ProjectImage.display_order"
+    )
+
+    tags = db.relationship(
+        "Tag",
+        secondary=project_tags,
+        backref="projects"
+    )
+
+    view_count = db.Column(
+        db.Integer,
+        default=0
     )
 
     client = db.Column(db.String(100))
@@ -234,6 +273,8 @@ class Settings(db.Model):
         default="uploads/site/default-favicon.png"
     )
 
+    resume_file = db.Column(db.String(255))
+
     # Social
     github = db.Column(db.String(255))
     linkedin = db.Column(db.String(255))
@@ -258,3 +299,86 @@ class Settings(db.Model):
         default=datetime.utcnow,
         onupdate=datetime.utcnow
     )
+
+
+class Testimonial(db.Model):
+    __tablename__ = "testimonials"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    name = db.Column(
+        db.String(100),
+        nullable=False
+    )
+
+    role_company = db.Column(db.String(150))
+
+    quote = db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    avatar = db.Column(db.String(255))
+
+    display_order = db.Column(
+        db.Integer,
+        default=0
+    )
+
+    published = db.Column(
+        db.Boolean,
+        default=True
+    )
+
+    created_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow
+    )
+
+    def __repr__(self):
+        return f"<Testimonial {self.name}>"
+
+
+class Post(db.Model):
+    __tablename__ = "posts"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    title = db.Column(
+        db.String(150),
+        nullable=False
+    )
+
+    slug = db.Column(
+        db.String(200),
+        unique=True,
+        nullable=False
+    )
+
+    excerpt = db.Column(db.String(300))
+
+    content = db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    cover_image = db.Column(db.String(255))
+
+    published = db.Column(
+        db.Boolean,
+        default=True
+    )
+
+    created_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow
+    )
+
+    updated_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
+    )
+
+    def __repr__(self):
+        return f"<Post {self.title}>"

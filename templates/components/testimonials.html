@@ -1,0 +1,55 @@
+{% if testimonials %}
+
+<section id="testimonials" class="py-5">
+
+<div class="container">
+
+    <div class="text-center mb-5">
+        <span class="section-tag">Testimonials</span>
+        <h2 class="section-title">What People Say</h2>
+    </div>
+
+    <div class="row g-4">
+
+        {% for testimonial in testimonials %}
+
+        <div class="col-lg-4 col-md-6">
+
+            <div class="project-card h-100 p-4">
+
+                <p class="fst-italic">
+                    "{{ testimonial.quote }}"
+                </p>
+
+                <div class="d-flex align-items-center mt-4">
+
+                    {% if testimonial.avatar %}
+                        <img src="{{ upload_url(testimonial.avatar) }}"
+                             class="rounded-circle me-3"
+                             width="48" height="48"
+                             style="object-fit: cover;">
+                    {% endif %}
+
+                    <div>
+                        <h6 class="mb-0">{{ testimonial.name }}</h6>
+
+                        {% if testimonial.role_company %}
+                            <small class="text-muted">{{ testimonial.role_company }}</small>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</section>
+
+{% endif %}

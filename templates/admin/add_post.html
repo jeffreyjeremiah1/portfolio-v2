@@ -1,0 +1,44 @@
+{% extends "admin/admin_base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <h2 class="mb-3 text-body">Add Post</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3 text-body">
+            {{ form.title.label(class="form-label") }}
+            {{ form.title(class="form-control") }}
+        </div>
+
+        <div class="mb-3 text-body">
+            {{ form.excerpt.label(class="form-label") }}
+            {{ form.excerpt(class="form-control", placeholder="Short summary shown in the blog list...") }}
+        </div>
+
+        <div class="mb-4">
+            {{ form.content.label(class="form-label") }}
+            {{ form.content(class="form-control", rows="10", **{"data-richtext": "true"}) }}
+        </div>
+
+        <div class="mb-3 text-body">
+            {{ form.cover_image.label(class="form-label") }}
+            {{ form.cover_image(class="form-control") }}
+        </div>
+
+        <div class="form-check mb-4">
+            {{ form.published(class="form-check-input") }}
+            {{ form.published.label(class="form-check-label") }}
+        </div>
+
+        {{ form.submit(class="btn btn-primary") }}
+
+    </form>
+
+</div>
+
+{% endblock %}

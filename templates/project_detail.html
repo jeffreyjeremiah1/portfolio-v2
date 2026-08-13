@@ -26,11 +26,19 @@
 
             </h1>
 
-            <p class="lead">
+            <div class="lead">
 
-            {{ project.description }}
+            {{ project.description | safe }}
 
-            </p>
+            </div>
+
+            {% if project.tags %}
+            <div class="mb-3">
+                {% for tag in project.tags %}
+                    <span class="badge bg-secondary">{{ tag.name }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
 
             <div class="mt-4">
 
@@ -63,8 +71,7 @@
         <div class="col-lg-6">
 
             <img
-                src="{{ url_for('static',
-                filename=project.image) }}"
+                src="{{ upload_url(project.image) }}"
                 class="img-fluid rounded shadow">
 
         </div>
@@ -197,35 +204,35 @@ Technologies Used
     {% if project.challenge_text %}
     <div class="mb-4">
         <h3 class="fw-bold mb-3">The Challenge</h3>
-        <p style="white-space: pre-wrap;">{{ project.challenge_text }}</p>
+        <div>{{ project.challenge_text | safe }}</div>
     </div>
     {% endif %}
 
     {% if project.solution_text %}
     <div class="mb-4">
         <h3 class="fw-bold mb-3">The Solution</h3>
-        <p style="white-space: pre-wrap;">{{ project.solution_text }}</p>
+        <div>{{ project.solution_text | safe }}</div>
     </div>
     {% endif %}
 
     {% if project.development_process %}
     <div class="mb-4">
         <h3 class="fw-bold mb-3">Development Process</h3>
-        <p style="white-space: pre-wrap;">{{ project.development_process }}</p>
+        <div>{{ project.development_process | safe }}</div>
     </div>
     {% endif %}
 
     {% if project.results_text %}
     <div class="mb-4">
         <h3 class="fw-bold mb-3">Results / Outcome</h3>
-        <p style="white-space: pre-wrap;">{{ project.results_text }}</p>
+        <div>{{ project.results_text | safe }}</div>
     </div>
     {% endif %}
 
     {% if project.lessons_text %}
     <div class="mb-4">
         <h3 class="fw-bold mb-3">Lessons Learned</h3>
-        <p style="white-space: pre-wrap;">{{ project.lessons_text }}</p>
+        <div>{{ project.lessons_text | safe }}</div>
     </div>
     {% endif %}
 
@@ -250,13 +257,13 @@ Technologies Used
         <div class="col-lg-4 col-md-6">
 
             <a
-                href="{{ url_for('static', filename=image.image) }}"
+                href="{{ upload_url(image.image) }}"
                 class="project-gallery"
                 data-gallery="portfolio"
                 data-title="{{ project.title }}">
                 
                 <img
-                    src="{{ url_for('static', filename=image.image) }}"
+                    src="{{ upload_url(image.image) }}"
                     class="img-fluid rounded shadow-sm gallery-image"
                     alt="{{ project.title }}">
 
@@ -273,7 +280,7 @@ Technologies Used
     <div class="text-center py-5">
 
         <img
-            src="{{ url_for('static', filename=project.image) }}"
+            src="{{ upload_url(project.image) }}"
             class="img-fluid rounded shadow"
             style="max-width:900px;"
             alt="{{ project.title }}">

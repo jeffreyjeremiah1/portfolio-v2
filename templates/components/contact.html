@@ -26,6 +26,12 @@
 
                     {{ form.hidden_tag() }}
 
+                    <!-- Honeypot: hidden from real visitors, catches bots that fill every field -->
+                    <div style="position:absolute;left:-9999px;top:-9999px;" aria-hidden="true">
+                        {{ form.website.label }}
+                        {{ form.website(tabindex="-1", autocomplete="off") }}
+                    </div>
+
                     <div class="row">
 
                         <div class="col-md-6 mb-3">

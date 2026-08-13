@@ -19,7 +19,7 @@
                     slug=project.slug) }}">
 
                     {% if project.image %}
-                        <img src="{{ url_for('static', filename=project.image) }}"
+                        <img src="{{ upload_url(project.image) }}"
                             class="card-img-top"
                             alt="{{ project.title }}">
                     {% else %}
@@ -39,7 +39,7 @@
                         </a>
                     </h3>
 
-                    <p>{{ project.description }}</p>
+                    <p>{{ project.description | safe }}</p>
 
                     <div class="mb-3">
                         {% if project.technologies %}
@@ -71,6 +71,12 @@
 
         {% endfor %}
 
+    </div>
+
+    <div class="text-center mt-5">
+        <a href="{{ url_for('public.projects_list') }}" class="btn btn-outline-light">
+            View All Projects
+        </a>
     </div>
 
 </div>

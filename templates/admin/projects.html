@@ -77,7 +77,7 @@
                         {% if project.image %}
 
                             <img
-                                src="{{ url_for('static', filename=project.image) }}"
+                                src="{{ upload_url(project.image) }}"
                                 class="img-fluid rounded"
                                 style="width:70px;height:70px;object-fit:cover;">
 
