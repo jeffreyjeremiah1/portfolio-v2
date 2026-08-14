@@ -6,21 +6,21 @@
 
             <!-- Left -->
 
-            <div class="col-lg-6">
+            <div class="col-lg-6 hero-grid">
 
                 <p class="hero-intro">
-                    👋 Hello, I'm
+                    Portfolio &mdash; Introduction
                 </p>
 
                 <h1 class="display-2 fw-bold">
                     Jeffrey Jeremiah
                 </h1>
 
-                <h2 class="hero-title">
+                <h2 class="role">
                     Python Developer
                 </h2>
 
-                <p class="hero-description">
+                <p class="desc">
 
                     I build Python applications,
                     automate business processes,
@@ -30,17 +30,17 @@
 
                 </p>
 
-                <div class="mt-4">
+                <div class="cta-row">
 
                     <a href="#projects"
-                       class="btn btn-primary btn-lg me-3">
+                       class="btn btn-primary">
 
                         View Projects
 
                     </a>
 
                     <a href="#contact"
-                       class="btn btn-outline-light btn-lg">
+                       class="btn btn-secondary">
 
                         Hire Me
 
@@ -48,29 +48,29 @@
 
                 </div>
 
-                <div class="hero-stats mt-5">
+                <div class="stats">
 
     <div class="stat">
 
-        <h3>15+</h3>
+        <h3 class="stat-num">15+</h3>
 
-        <p>Projects</p>
+        <p class="stat-label">Projects</p>
 
     </div>
 
     <div class="stat">
 
-        <h3>4+</h3>
+        <h3 class="stat-num">4+</h3>
 
-        <p>Years Learning</p>
+        <p class="stat-label">Years Learning</p>
 
     </div>
 
     <div class="stat">
 
-        <h3>100%</h3>
+        <h3 class="stat-num">100%</h3>
 
-        <p>Commitment</p>
+        <p class="stat-label">Commitment</p>
 
     </div>
 
@@ -82,19 +82,31 @@
 
             <div class="col-lg-6 text-center">
 
-                <div class="profile-card">
+                <div class="profile-frame">
 
                     <img src="{{ url_for('static',
                     filename='img/profile.jpg') }}"
                     class="profile-image"
                     alt="Jeffrey Jeremiah">
 
+                    <div class="profile-frame-label">
+                        Jeffrey Jeremiah
+                    </div>
+
                 </div>
+
+                <p class="profile-caption">
+                    Portfolio Station &mdash; 2026
+                </p>
 
             </div>
 
         </div>
 
     </div>
+
+    <svg class="hero-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,40 C 240,90 480,-10 720,40 C 960,90 1200,-10 1440,40 L1440,80 L0,80 Z" fill="currentColor"></path>
+    </svg>
 
 </section>

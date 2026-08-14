@@ -1,8 +1,25 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, MultipleFileField
 from wtforms import StringField, SubmitField, PasswordField, IntegerField, BooleanField, TextAreaField, EmailField, DateField, SelectMultipleField
-from wtforms.validators import Email, Length, EqualTo, Optional, DataRequired
+from wtforms.validators import Email, Length, EqualTo, Optional, DataRequired, Regexp, ValidationError
 from wtforms.widgets import ListWidget, CheckboxInput
+
+
+def validate_pdf_content(form, field):
+    """
+    FileAllowed only checks the extension, so a renamed non-PDF file
+    would otherwise pass. Reject anything whose content doesn't start
+    with the PDF magic bytes.
+    """
+
+    if not field.data or not getattr(field.data, "filename", None):
+        return
+
+    header = field.data.stream.read(5)
+    field.data.stream.seek(0)
+
+    if header != b"%PDF-":
+        raise ValidationError("File does not look like a valid PDF.")
 
 
 class LoginForm(FlaskForm):
@@ -34,9 +51,21 @@ class ProjectForm(FlaskForm):
         validators=[DataRequired()]
     )
 
-    github = StringField("GitHub")
+    github = StringField(
+        "GitHub",
+        validators=[
+            Optional(),
+            Regexp(r"(?i)^https?://", message="Must be a valid http(s) URL.")
+        ]
+    )
 
-    demo = StringField("Demo")
+    demo = StringField(
+        "Demo",
+        validators=[
+            Optional(),
+            Regexp(r"(?i)^https?://", message="Must be a valid http(s) URL.")
+        ]
+    )
 
     technologies = StringField("Technologies")
 
@@ -218,7 +247,8 @@ class ChangePasswordForm(FlaskForm):
         validators=[
             DataRequired(),
             Length(min=8)
-        ]
+        ],
+        render_kw={"minlength": "8"}
     )
 
     confirm_password = PasswordField(
@@ -307,7 +337,8 @@ class SettingsForm(FlaskForm):
             FileAllowed(
                 ["pdf"],
                 "PDF only."
-            )
+            ),
+            validate_pdf_content
         ]
     )
 

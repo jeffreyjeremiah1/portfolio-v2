@@ -22,7 +22,7 @@
         <div class="input-group mx-auto" style="max-width: 500px;">
 
             <input
-                class="form-control"
+                class="form-control search-input"
                 name="q"
                 placeholder="Search projects..."
                 value="{{ search }}">
@@ -65,6 +65,10 @@
 
             <div class="project-card">
 
+                <span class="project-card-index">
+                    {{ "%02d"|format(loop.index) }}
+                </span>
+
                 <a href="{{ url_for('public.project_detail', slug=project.slug) }}">
 
                     {% if project.image %}
@@ -91,7 +95,7 @@
                     <div class="mb-3">
                         {% if project.technologies %}
                             {% for tech in project.technologies.split(',') %}
-                                <span class="badge bg-primary">
+                                <span class="tech-badge">
                                     {{ tech.strip() }}
                                 </span>
                             {% endfor %}

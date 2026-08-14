@@ -7,12 +7,11 @@
 
             {% if settings and settings.logo %}
                 <img src="{{ upload_url(settings.logo) }}"
-                    alt="{{ settings.site_name }}"
-                    height="40"
-                    class="me-2">
+                    alt="{{ settings.site_name if settings else 'Jeffrey Jeremiah' }}"
+                    height="60">
+            {% else %}
+                {{ settings.site_name if settings else "Jeffrey Jeremiah" }}
             {% endif %}
-
-            {{ settings.site_name if settings else "Jeffrey Jeremiah" }}
 
         </a>
 
@@ -76,9 +75,10 @@
                 <li class="nav-item ms-lg-3">
                     <button id="theme-toggle"
                             type="button"
-                            class="btn btn-outline-light"
+                            class="btn theme-toggle-btn"
                             aria-label="Toggle dark and light mode">
-                        <i class="fa-solid fa-moon"></i>
+                        <i class="fa-solid fa-moon me-1"></i>
+                        <span class="theme-toggle-text">Dark</span>
                     </button>
                 </li>
 

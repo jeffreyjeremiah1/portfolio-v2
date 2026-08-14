@@ -15,26 +15,31 @@
 
         <div class="col-lg-4 col-md-6">
 
-            <div class="project-card h-100 p-4">
+            <div class="testimonial-card">
 
-                <p class="fst-italic">
+                <i class="fa-solid fa-quote-left quote-icon"></i>
+
+                <p class="testimonial-quote">
                     "{{ testimonial.quote }}"
                 </p>
 
-                <div class="d-flex align-items-center mt-4">
+                <div class="testimonial-author">
 
                     {% if testimonial.avatar %}
                         <img src="{{ upload_url(testimonial.avatar) }}"
-                             class="rounded-circle me-3"
-                             width="48" height="48"
-                             style="object-fit: cover;">
+                             class="testimonial-avatar"
+                             alt="{{ testimonial.name }}">
+                    {% else %}
+                        <div class="testimonial-avatar testimonial-avatar-fallback">
+                            {{ testimonial.name[0] }}
+                        </div>
                     {% endif %}
 
                     <div>
-                        <h6 class="mb-0">{{ testimonial.name }}</h6>
+                        <h6 class="testimonial-name mb-0">{{ testimonial.name }}</h6>
 
                         {% if testimonial.role_company %}
-                            <small class="text-muted">{{ testimonial.role_company }}</small>
+                            <small class="testimonial-role">{{ testimonial.role_company }}</small>
                         {% endif %}
                     </div>
 
