@@ -5,6 +5,7 @@ from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
 from flask_talisman import Talisman
 from flask_wtf import CSRFProtect
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from config import Config
 from extensions import limiter
@@ -35,6 +36,18 @@ if os.getenv("SENTRY_DSN"):
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+
+# Trust the single reverse-proxy hop added by the host (Render/Railway/
+# Heroku-style platforms all add exactly one). Without this,
+# request.remote_addr is the proxy's own IP for every visitor, which
+# collapses Flask-Limiter's per-IP rate limits (login, contact form) into
+# one shared bucket for the whole site — trivially DoS'd by anyone.
+# Gated on FORCE_HTTPS (the existing "we're behind a real proxy" flag) so
+# local dev never trusts a client-supplied X-Forwarded-For header, which
+# would let a direct attacker spoof their IP and bypass rate limiting.
+if app.config["FORCE_HTTPS"]:
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 
 
 # Security headers (HSTS, X-Frame-Options, CSP, etc). CSP is scoped to the

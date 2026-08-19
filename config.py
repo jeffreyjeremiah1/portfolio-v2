@@ -23,6 +23,9 @@ def _normalize_db_url(url):
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY")
 
+    # Explicit rather than relying on the browser's implicit default.
+    SESSION_COOKIE_SAMESITE = "Lax"
+
     SQLALCHEMY_DATABASE_URI = _normalize_db_url(os.getenv("DATABASE_URL"))
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False

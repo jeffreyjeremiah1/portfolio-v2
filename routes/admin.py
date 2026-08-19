@@ -3,7 +3,8 @@ from models import db, Project, ProjectImage, Message, User, Settings, Tag, Test
 from forms import ProjectForm, EditProfileForm, ChangePasswordForm, SettingsForm, TagForm, TestimonialForm, PostForm
 from slugify import slugify
 from flask_login import login_required, current_user
-from utils import delete_image, save_image, save_file
+from extensions import limiter
+from utils import delete_image, save_image, save_file, sanitize_html
 from werkzeug.datastructures import FileStorage
 
 
@@ -120,16 +121,16 @@ def add_project():
 
         project = Project(
             title=form.title.data,
-            description=form.description.data,
+            description=sanitize_html(form.description.data),
             image=image_path,
             github=form.github.data,
             demo=form.demo.data,
             technologies=form.technologies.data,
-            challenge_text=form.challenge_text.data,
-            solution_text=form.solution_text.data,
-            development_process=form.development_process.data,
-            results_text=form.results_text.data,
-            lessons_text=form.lessons_text.data,
+            challenge_text=sanitize_html(form.challenge_text.data),
+            solution_text=sanitize_html(form.solution_text.data),
+            development_process=sanitize_html(form.development_process.data),
+            results_text=sanitize_html(form.results_text.data),
+            lessons_text=sanitize_html(form.lessons_text.data),
         )
 
         project.tags = Tag.query.filter(
@@ -193,7 +194,7 @@ def edit_project(id):
     if form.validate_on_submit():
 
         project.title = form.title.data
-        project.description = form.description.data
+        project.description = sanitize_html(form.description.data)
         project.github = form.github.data
         project.demo = form.demo.data
         project.technologies = form.technologies.data
@@ -207,11 +208,11 @@ def edit_project(id):
         project.published = form.published.data
         project.display_order = form.display_order.data
 
-        project.challenge_text = form.challenge_text.data
-        project.solution_text = form.solution_text.data
-        project.development_process = form.development_process.data
-        project.results_text = form.results_text.data
-        project.lessons_text = form.lessons_text.data
+        project.challenge_text = sanitize_html(form.challenge_text.data)
+        project.solution_text = sanitize_html(form.solution_text.data)
+        project.development_process = sanitize_html(form.development_process.data)
+        project.results_text = sanitize_html(form.results_text.data)
+        project.lessons_text = sanitize_html(form.lessons_text.data)
 
         project.tags = Tag.query.filter(
             Tag.id.in_(form.tags.data)
@@ -442,6 +443,7 @@ def edit_profile():
 
 @admin.route("/profile/change-password", methods=["GET", "POST"])
 @login_required
+@limiter.limit("5 per minute", methods=["POST"])
 def change_password():
 
     form = ChangePasswordForm()
@@ -811,7 +813,7 @@ def add_post():
         post = Post(
             title=form.title.data,
             excerpt=form.excerpt.data,
-            content=form.content.data,
+            content=sanitize_html(form.content.data),
             cover_image=cover_path,
             published=form.published.data,
         )
@@ -850,7 +852,7 @@ def edit_post(id):
 
         post.title = form.title.data
         post.excerpt = form.excerpt.data
-        post.content = form.content.data
+        post.content = sanitize_html(form.content.data)
         post.published = form.published.data
 
         post.slug = slugify(form.title.data)

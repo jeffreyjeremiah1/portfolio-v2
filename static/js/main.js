@@ -4,11 +4,16 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!toggleBtn) return;
 
     var icon = toggleBtn.querySelector("i");
+    var label = toggleBtn.querySelector(".theme-toggle-text");
 
     function updateIcon(theme) {
-        if (!icon) return;
-        icon.classList.toggle("fa-sun", theme === "light");
-        icon.classList.toggle("fa-moon", theme !== "light");
+        if (icon) {
+            icon.classList.toggle("fa-sun", theme === "light");
+            icon.classList.toggle("fa-moon", theme !== "light");
+        }
+        if (label) {
+            label.textContent = theme === "light" ? "Light" : "Dark";
+        }
     }
 
     updateIcon(document.documentElement.getAttribute("data-theme") || "dark");

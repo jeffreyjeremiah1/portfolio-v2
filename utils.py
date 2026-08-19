@@ -2,6 +2,7 @@ import io
 import os
 import uuid
 
+import nh3
 from PIL import Image
 from flask import current_app, url_for
 from werkzeug.utils import secure_filename
@@ -11,6 +12,35 @@ from models import Message
 
 def get_unread_count():
     return Message.query.filter_by(is_read=False).count()
+
+
+# Allowlist matching exactly what the Quill toolbar (static/js/main.js) can
+# produce: bold/italic/underline, h2/h3, ordered/bullet lists, links,
+# blockquotes. Anything else submitted to a data-richtext field (e.g. a
+# pasted <script>, or a raw POST bypassing the browser entirely) is
+# stripped before it's stored, so rendering it with |safe later can't
+# execute attacker-controlled markup even if the admin account is ever
+# compromised.
+RICHTEXT_TAGS = {
+    "p", "br", "strong", "em", "u", "s",
+    "h2", "h3", "ol", "ul", "li",
+    "a", "blockquote",
+}
+
+RICHTEXT_ATTRIBUTES = {
+    "a": {"href"},
+}
+
+
+def sanitize_html(html):
+    if not html:
+        return html
+
+    return nh3.clean(
+        html,
+        tags=RICHTEXT_TAGS,
+        attributes=RICHTEXT_ATTRIBUTES,
+    )
 
 
 def _s3_client():
@@ -77,7 +107,14 @@ def save_image(image_file, folder, size):
 
     image = Image.open(image_file)
 
-    image = image.convert("RGB")
+    # JPEG has no alpha channel, so it must be flattened to RGB. Every
+    # other supported format (PNG/WEBP/GIF) can carry transparency —
+    # convert to RGBA instead so an uploaded transparent logo/favicon
+    # isn't silently flattened onto a black background.
+    if extension in (".jpg", ".jpeg"):
+        image = image.convert("RGB")
+    else:
+        image = image.convert("RGBA")
 
     image.thumbnail(size)
 
