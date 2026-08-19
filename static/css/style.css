@@ -255,6 +255,22 @@ html[data-theme="light"] .navbar{
     }
 }
 
+/* Bootstrap's default toggler icon is hardcoded white (navbar-dark is
+   set unconditionally in navbar.html so the theme can drive colors via
+   CSS vars) — that's invisible against the light theme's cream navbar.
+   Recolor it to match --text in each theme instead. */
+.navbar-toggler {
+    border-color: var(--border);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(243, 232, 216, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+html[data-theme="light"] .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(42, 29, 18, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
 .nav-link {
     color: var(--text) !important;
     margin-left: 20px;
@@ -376,6 +392,16 @@ html[data-theme="light"] .navbar{
 .hero .hero-grid {
     display: block;
     max-width: 640px;
+}
+
+@media (max-width: 575.98px) {
+    .hero h1 {
+        font-size: 48px;
+    }
+
+    .hero h2.role {
+        font-size: 22px;
+    }
 }
 
 .btn{
