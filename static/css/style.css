@@ -120,6 +120,10 @@ h1.display-2::first-letter{
 
     display:inline-block;
 
+    max-width: 100%;
+
+    box-sizing: border-box;
+
     padding:16px;
 
     background:var(--card-color);
@@ -160,7 +164,9 @@ h1.display-2::first-letter{
 
     width:350px;
 
-    height:350px;
+    max-width: 100%;
+
+    aspect-ratio: 1 / 1;
 
     object-fit:cover;
 
